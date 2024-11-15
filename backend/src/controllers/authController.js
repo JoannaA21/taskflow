@@ -30,12 +30,23 @@ const login = async (req, res) => {
         message: "Invalid email/username or password",
       });
     }
+
+    const decode = {
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+    };
+
+    console.log("signing payload", decode);
+    const token = jwt.sign(decode, SECRET_KEY);
+    res.json({ token: token });
   } catch (err) {
     res.status(500).json({
       error: err.message || "An error occurred while logging in.",
       details: err,
     });
   }
+
   //res.json({ message: "Login" });
 };
 //logout
