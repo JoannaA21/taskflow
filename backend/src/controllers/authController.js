@@ -1,7 +1,6 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
-const SECRET_KEY = process.env.SECRET_KEY;
 
 const bcrypt = require("bcrypt");
 
@@ -38,7 +37,7 @@ const login = async (req, res) => {
     };
 
     console.log("signing payload", decode);
-    const token = jwt.sign(decode, SECRET_KEY);
+    const token = jwt.sign(decode, process.env.ACCESS_SECRET_KEY);
     res.json({ token: token });
   } catch (err) {
     res.status(500).json({
@@ -49,6 +48,7 @@ const login = async (req, res) => {
 
   //res.json({ message: "Login" });
 };
+
 //logout
 const logout = async (req, res) => {
   res.json({ message: "Logout" });

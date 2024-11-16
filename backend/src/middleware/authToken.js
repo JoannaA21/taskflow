@@ -23,7 +23,7 @@ const authenticateToken = (req, res, next) => {
     }
 
     // If verification is successful, attach the decoded user data to the request object for later use
-    //console.log("Decoded user data:", user); // Log the user data
+    console.log("Decoded user data:", user); // Log the user data
     req.user = user;
 
     // Call the next middleware or route handler

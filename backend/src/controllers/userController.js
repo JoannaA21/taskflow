@@ -1,5 +1,5 @@
 const User = require("../models/userModel");
-
+const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
 //Get all user
@@ -20,17 +20,19 @@ const getAllUser = async (req, res) => {
 const getUserById = async (req, res) => {
   const { id } = req.params;
   try {
+    //checks Id if it's a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     const user = await User.findById(id);
+
     if (!user) {
-      return res.status(404).json({ message: "User not found." });
+      return res.status(400).json({ message: "User not found." });
     }
 
     res.status(200).json(user);
   } catch (err) {
-    if (err.name === "CastError") {
-      return res.status(400).json({ message: "Invalid user ID." });
-    }
-
     res.status(500).json({
       error: err.message || "Failed to retrieve user by Id.",
       details: err,
@@ -55,7 +57,10 @@ const createUser = async (req, res) => {
 
     res.status(200).json(user);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(500).json({
+      error: err.message || "Failed to create user.",
+      details: err,
+    });
   }
   //res.json({ message: "Create new user" });
 };
@@ -69,8 +74,18 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   const { id } = req.params;
   try {
-    await User.findByIdAndDelete(id);
-    res.status(204).json({ message: "User has been deleted!" });
+    //checks Id if it's a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const user = await User.findOneAndDelete({ _id: id });
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found." });
+    }
+
+    res.status(200).json(user);
   } catch (err) {
     res.status(500).json({
       error: err.message || "Failed to delete user by Id.",
