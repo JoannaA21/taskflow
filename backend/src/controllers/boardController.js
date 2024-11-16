@@ -46,7 +46,7 @@ const getBoardById = async (req, res) => {
     });
 
     if (!board) {
-      return res.status(404).json({ message: "Board not found" });
+      return res.status(404).json({ message: "Board not found." });
     }
 
     res.status(200).json(board);
@@ -95,9 +95,9 @@ const deleteBoard = async (req, res) => {
     });
 
     if (!board) {
-      return res.status(404).json({ message: "Board not found" });
+      return res.status(404).json({ message: "Board not found." });
     }
-    res.status(200).json({ message: "Board deleted successfully" });
+    res.status(200).json({ message: "Board deleted successfully." });
   } catch (err) {
     res.status(500).json({
       error: err.message || "Failed to delete board.",

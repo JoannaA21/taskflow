@@ -5,6 +5,10 @@ const User = require("../controllers/userController");
 const Board = require("../controllers/boardController");
 const Task = require("../controllers/taskController");
 const { authenticateToken } = require("../middleware/authToken");
+const {
+  verifyBoardOwnership,
+  verifyTaskOwnership,
+} = require("../middleware/verifyOwnership");
 
 router.post("/login", login);
 router.get("/logout", logout);
@@ -24,10 +28,35 @@ router.patch("/boards/:id", authenticateToken, Board.updateBoard);
 router.delete("/boards/:id", authenticateToken, Board.deleteBoard);
 
 //Task Routes
-router.get("/boards/:boardId/tasks", Task.getAllTaskFromBoard);
-router.get("/tasks/:taskId", Task.getTaskById);
-router.post("/boards/:boardId/tasks", Task.createTask);
-router.patch("/tasks/:taskId", Task.updateTask);
-router.delete("/tasks/:taskId", Task.deleteTask);
+router.get(
+  "/boards/:boardId/tasks",
+  authenticateToken,
+  verifyBoardOwnership,
+  Task.getAllTaskFromBoard
+);
+router.post(
+  "/boards/:boardId/tasks",
+  authenticateToken,
+  verifyBoardOwnership,
+  Task.createTask
+);
+router.get(
+  "/tasks/:taskId",
+  authenticateToken,
+  verifyTaskOwnership,
+  Task.getTaskById
+);
+router.patch(
+  "/tasks/:taskId",
+  authenticateToken,
+  verifyTaskOwnership,
+  Task.updateTask
+);
+router.delete(
+  "/tasks/:taskId",
+  authenticateToken,
+  verifyTaskOwnership,
+  Task.deleteTask
+);
 
 module.exports = router;
