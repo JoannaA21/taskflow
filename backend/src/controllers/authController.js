@@ -7,10 +7,10 @@ const bcrypt = require("bcrypt");
 //login
 const login = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { emailOrUsername, password } = req.body;
 
     const user = await User.findOne({
-      $or: [{ email: email }, { username: username }],
+      $or: [{ email: emailOrUsername }, { username: emailOrUsername }],
     });
 
     if (!user) {

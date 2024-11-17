@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 
 const SignupForm = () => {
   const api = "http://localhost:4000/api/signup/";
@@ -12,7 +12,7 @@ const SignupForm = () => {
     confirmPassword: "",
   });
 
-  const navigate = useNavigate();
+  //const navigate = useNavigate(); // Hook to navigate to a different route programmatically
 
   const [passwordCheck, setPasswordCheck] = useState("");
   //   const handleData = (e) => {
@@ -25,7 +25,7 @@ const SignupForm = () => {
     e.preventDefault();
 
     if (user.password !== user.confirmPassword) {
-      setPasswordCheck("Passwords fo not matCH. Please try again.");
+      setPasswordCheck("Passwords do not match. Please try again.");
       return; //prevent sending request
     } else {
       setPasswordCheck("");
@@ -37,7 +37,7 @@ const SignupForm = () => {
 
       if (response.status === 200 || response.status === 201) {
         console.log("Signup successful!", response.data);
-        navigate("/login");
+        //navigate("/login");
       } else {
         console.error("Signup failed:", response.data);
       }
