@@ -30,6 +30,7 @@ const login = async (req, res) => {
       });
     }
 
+    //Payload for token
     const decode = {
       _id: user._id,
       username: user.username,
@@ -37,8 +38,20 @@ const login = async (req, res) => {
     };
 
     console.log("signing payload", decode);
-    const token = jwt.sign(decode, process.env.ACCESS_SECRET_KEY);
-    res.json({ token: token });
+    const token = jwt.sign(decode, process.env.ACCESS_SECRET_KEY, {
+      expiresIn: "1h",
+    });
+
+    const details = {
+      details: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+      },
+      token: token,
+    };
+
+    res.json({ details });
   } catch (err) {
     res.status(500).json({
       error: err.message || "An error occurred while logging in.",

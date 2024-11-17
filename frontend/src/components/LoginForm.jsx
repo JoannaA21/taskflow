@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const api = "http://localhost:4000/api/login";
@@ -10,7 +10,8 @@ const LoginForm = () => {
     password: "",
   });
 
-  //const navigate = useNavigate(); // Hook to navigate to a different route programmatically
+  const [error, setError] = useState(""); // State to handle errors
+  const navigate = useNavigate(); // Hook to navigate to a different route programmatically
 
   const handleInputChange = (e) => {
     const name = e.target.name;
@@ -24,23 +25,29 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); // Clear any previous error messages
+
     try {
       const response = await axios.post(api, userLogin);
       console.log(response.data);
       if (response.status === 200) {
-        const { token, user } = response.data;
-        localStorage.setItem("jwt", token);
-        // navigate("/dashboard");
+        const userLoginInfo = {
+          details: response.data.details.details,
+          token: token,
+        };
 
-        /*
-        
-        AUTHORIZATION CODE HERE!!!
-
-        */
+        localStorage.setItem("loggedIn", JSON.stringify(login)); // Store the token in localStorage
+        navigate("/dashboard");
       }
     } catch (err) {
-      console.error("Signup error:", err);
+      setError(
+        err.response?.data?.message || "An error occurred during login."
+      );
     }
+  };
+
+  const redirectToSignup = () => {
+    navigate("/signup");
   };
 
   return (
@@ -62,10 +69,12 @@ const LoginForm = () => {
         />
         <button type="submit">Login</button>
       </form>
+      <p>
+        Don't have an account?
+        <span onClick={redirectToSignup}>Sign Up</span>
+      </p>
     </div>
   );
 };
 
 export default LoginForm;
-
-//Need to do the authorization inn the frontend

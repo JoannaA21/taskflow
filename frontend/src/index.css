@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* styles.css or global.css */
+@layer base {
+  * {
+    @apply m-0;
+  }
+}
