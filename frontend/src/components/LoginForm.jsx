@@ -29,11 +29,12 @@ const LoginForm = () => {
 
     try {
       const response = await axios.post(api, userLogin);
-      // console.log(response.data);
+      let userLoginInfo;
+      console.log(response.data);
       if (response.status === 200) {
-        const userLoginInfo = {
+        userLoginInfo = {
           details: response.data.details.details,
-          token: token,
+          token: response.data.details.token,
         };
 
         localStorage.setItem("loggedIn", JSON.stringify(userLoginInfo)); // Store the token in localStorage

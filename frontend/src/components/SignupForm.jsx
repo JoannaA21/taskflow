@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SignupForm = () => {
-  const api = "http://localhost:4000/api/signup/";
+  const signupAPI = "http://localhost:4000/api/signup/";
+  const userAPI = "http://localhost:4000/api/users/";
 
   const [user, setUser] = useState({
     username: "",
@@ -12,27 +13,43 @@ const SignupForm = () => {
     confirmPassword: "",
   });
 
-  const navigate = useNavigate(); // Hook to navigate to a different route programmatically
+  const [errorMessage, setErrorMessage] = useState(""); // To display username or email errors
 
-  const [passwordCheck, setPasswordCheck] = useState("");
-  //   const handleData = (e) => {
-  //     const name = e.target.name
-  //     const value  = e.target.value
-  //     setUsers({...useSyncExternalStore, [name]: value})
-  //   }
+  const navigate = useNavigate(); // Hook to navigate to a different route programmatically
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (user.password !== user.confirmPassword) {
-      setPasswordCheck("Passwords do not match. Please try again.");
-      return; //prevent sending request
-    } else {
-      setPasswordCheck("");
-    }
-
     try {
-      const response = await axios.post(api, user); //send user to the backend
+      const userResponse = await axios.get(userAPI);
+      const existingUsers = userResponse.data;
+
+      const emailExist = await existingUsers.find(
+        (userExists) => userExists.email === user.email
+      );
+
+      const usernameExist = await existingUsers.find(
+        (userExists) => userExists.username === user.username
+      );
+
+      if (usernameExist) {
+        setErrorMessage("Username already exist. Please try again.");
+        return;
+      }
+
+      if (emailExist) {
+        setErrorMessage("Email already exist. Please login.");
+        return;
+      }
+
+      if (user.password !== user.confirmPassword) {
+        setErrorMessage("Passwords do not match. Please try again.");
+        return; //prevent sending request
+      }
+
+      setErrorMessage(""); // Clear error messages if no issues found
+
+      const response = await axios.post(signupAPI, user); //send user to the backend
       console.log(response);
 
       if (response.status === 200 || response.status === 201) {
@@ -99,7 +116,7 @@ const SignupForm = () => {
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
         <p className="text-red-700 text-md bg-red-200 p-1 w-fit">
-          {passwordCheck}
+          {errorMessage}
         </p>
         <button
           type="submit"
@@ -110,7 +127,7 @@ const SignupForm = () => {
       </form>
 
       <br />
-      <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+      <p className="text-sm font-light text-gray-500 dark:text-gray-400">
         Already have an account?
         <span
           onClick={redirectToLogin}
