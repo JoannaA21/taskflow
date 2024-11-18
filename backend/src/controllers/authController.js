@@ -15,7 +15,7 @@ const login = async (req, res) => {
 
     if (!user) {
       return res.status(401).json({
-        message: "Invalid username or email.",
+        message: "Username or email does not exist.",
       });
     }
 
@@ -26,7 +26,7 @@ const login = async (req, res) => {
 
     if (!isPasswordMatch) {
       return res.status(401).json({
-        message: "Invalid email/username or password",
+        message: "Invalid email/username or password. Please try again.",
       });
     }
 
@@ -37,7 +37,7 @@ const login = async (req, res) => {
       email: user.email,
     };
 
-    console.log("signing payload", decode);
+    //console.log("signing payload", decode);
     const token = jwt.sign(decode, process.env.ACCESS_SECRET_KEY, {
       expiresIn: "1h",
     });
@@ -71,3 +71,5 @@ module.exports = {
   login,
   logout,
 };
+
+//Logout not implemented

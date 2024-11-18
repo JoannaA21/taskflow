@@ -6,7 +6,7 @@ const SignupPage = () => {
   return (
     <div className="flex h-screen bg-primary-700">
       {/* Left side: Animation */}
-      <div className="w-1/2 flex justify-center items-center bg-primary-700">
+      <div className="w-10/12 flex justify-center items-center bg-primary-700">
         <Lottie animationData={animationData} loop={true} className="w-3/4" />
       </div>
 
