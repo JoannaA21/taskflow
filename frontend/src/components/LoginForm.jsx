@@ -90,7 +90,7 @@ const LoginForm = () => {
         </button>
       </form>
       <br />
-      <p>
+      <p className="text-sm font-light text-gray-500 dark:text-gray-400">
         Don't have an account?
         <span
           onClick={redirectToSignup}
