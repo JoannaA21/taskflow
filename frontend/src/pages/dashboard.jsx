@@ -4,7 +4,6 @@ const Dashboard = () => {
   return (
     <div>
       <BoardCard />
-      <p>This is dashboard</p>
     </div>
   );
 };

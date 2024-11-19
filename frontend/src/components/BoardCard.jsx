@@ -33,7 +33,7 @@ const BoardCard = () => {
 
   return (
     <div>
-      <h2>Boards</h2>
+      <h2>Dashboard</h2>
       {error && <p>{error}</p>}
       {boards.length > 0 ? (
         <BoardList boards={boards} />
