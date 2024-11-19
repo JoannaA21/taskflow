@@ -39,7 +39,9 @@ const BoardCard = () => {
       <h2>Dashboard</h2>
       {error && <p>{error}</p>}
       {boards.length > 0 ? (
-        <BoardList boards={boards} />
+        <div>
+          <BoardList boards={boards} />
+        </div>
       ) : (
         <p>No boards to display.</p>
       )}

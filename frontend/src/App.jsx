@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
+import BoardDetailsPage from "./pages/BoardDetailsPage";
 
 function App() {
   const [boardList, setBoardList] = useState([]);
@@ -23,6 +24,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/board/:boardId" element={<BoardDetailsPage />} />
           </Routes>
         </Router>
       </div>

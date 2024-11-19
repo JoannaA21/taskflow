@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import TaskList from "./TaskList";
+import { Link } from "react-router-dom";
 
 const BoardList = ({ boards }) => {
   const containerRef = useRef(null); // Reference for the container
@@ -35,7 +36,7 @@ const BoardList = ({ boards }) => {
       {/* Board Container */}
       <div
         ref={containerRef}
-        className="flex overflow-x-scroll scroll-smooth no-scrollbar space-x-4"
+        className="flex overflow-x-scroll scroll-smooth no-scrollbar space-x-4 "
         style={{ scrollSnapType: "x mandatory" }}
       >
         {boards.map((board, index) => {
@@ -43,16 +44,12 @@ const BoardList = ({ boards }) => {
           const backgroundColor = `hsl(${hue}, 70%, 80%)`;
 
           return (
-            <div
+            <Link
+              to={`/board/${board._id}`}
               key={board._id}
-              className="flex-shrink-0 w-1/5 max-w-sm border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+              className="flex-shrink-0 w-1/5 max-w-sm border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:scale-105 transition duration-200"
               style={{ scrollSnapAlign: "center" }}
             >
-              {/* <div>
-                {console.log("board.tasks for board:", board.name, board._id)}
-                {console.log("tasks", board.tasks)}
-              </div> */}
-
               {/* Colored Top Section */}
               <div
                 className="p-4 rounded-t-lg flex flex-col justify-center"
@@ -68,7 +65,7 @@ const BoardList = ({ boards }) => {
               <div className="bg-white min-w-[150px] p-4 rounded-b-lg">
                 <TaskList boardId={board._id} />
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>
