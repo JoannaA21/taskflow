@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import TaskList from "./TaskList";
 
 const BoardList = ({ boards }) => {
   const containerRef = useRef(null); // Reference for the container
@@ -61,16 +62,20 @@ const BoardList = ({ boards }) => {
               {/* White Task Section */}
               <div className="bg-white min-w-[150px] p-4 rounded-b-lg">
                 {board.tasks && board.tasks.length > 0 ? (
-                  <ul className="space-y-2">
-                    {board.tasks.map((task, taskIndex) => (
-                      <li
-                        key={taskIndex}
-                        className="p-2 text-sm font-medium text-gray-800 bg-gray-100 rounded shadow"
-                      >
-                        {task}
-                      </li>
-                    ))}
-                  </ul>
+                  //   <ul className="space-y-2">
+                  //     {board.tasks.map((task, taskIndex) => (
+                  //       <li
+                  //         key={taskIndex}
+                  //         className="p-2 text-sm font-medium text-gray-800 bg-gray-100 rounded shadow"
+                  //       >
+                  //         {task}
+                  //       </li>
+                  //     ))}
+                  //   </ul>
+                  <div>
+                    <TaskList boardId={board._id} />
+                    {console.log("task", board._id)}
+                  </div>
                 ) : (
                   <p className="text-gray-600 italic">No tasks available</p>
                 )}
@@ -94,3 +99,5 @@ const BoardList = ({ boards }) => {
 };
 
 export default BoardList;
+
+//************* TaskList is not showing anything, _id of board is getting accessed incorrectly
