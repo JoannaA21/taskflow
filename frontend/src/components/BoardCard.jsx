@@ -13,8 +13,8 @@ const BoardCard = () => {
   const [boards, setBoards] = useState([]);
   const [error, setError] = useState("");
 
-  console.log("boards", boards);
-  // console.log("id", boards[0]._id);
+  //console.log("boards", boards);
+  //console.log("id", boards[0]._id);
 
   useEffect(() => {
     const fetchBoards = async () => {

@@ -48,6 +48,11 @@ const BoardList = ({ boards }) => {
               className="flex-shrink-0 w-1/5 max-w-sm border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
               style={{ scrollSnapAlign: "center" }}
             >
+              {/* <div>
+                {console.log("board.tasks for board:", board.name, board._id)}
+                {console.log("tasks", board.tasks)}
+              </div> */}
+
               {/* Colored Top Section */}
               <div
                 className="p-4 rounded-t-lg flex flex-col justify-center"
@@ -61,24 +66,7 @@ const BoardList = ({ boards }) => {
 
               {/* White Task Section */}
               <div className="bg-white min-w-[150px] p-4 rounded-b-lg">
-                {board.tasks && board.tasks.length > 0 ? (
-                  //   <ul className="space-y-2">
-                  //     {board.tasks.map((task, taskIndex) => (
-                  //       <li
-                  //         key={taskIndex}
-                  //         className="p-2 text-sm font-medium text-gray-800 bg-gray-100 rounded shadow"
-                  //       >
-                  //         {task}
-                  //       </li>
-                  //     ))}
-                  //   </ul>
-                  <div>
-                    <TaskList boardId={board._id} />
-                    {console.log("task", board._id)}
-                  </div>
-                ) : (
-                  <p className="text-gray-600 italic">No tasks available</p>
-                )}
+                <TaskList boardId={board._id} />
               </div>
             </div>
           );
