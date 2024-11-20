@@ -11,7 +11,6 @@ const Nav = () => {
   const [navText, setNavtext] = useState("");
   const [linkTo, setLinkTo] = useState("");
 
-  console.log(boardId);
   // Update navText and linkTo based on the current location/path
   useEffect(() => {
     if (location.pathname === "/dashboard") {

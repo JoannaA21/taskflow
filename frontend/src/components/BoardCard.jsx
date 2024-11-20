@@ -33,7 +33,7 @@ const BoardCard = () => {
     };
 
     fetchBoards();
-  }, [boardAPI, token]);
+  });
 
   return (
     <div>
