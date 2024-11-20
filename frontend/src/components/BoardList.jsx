@@ -84,5 +84,3 @@ const BoardList = ({ boards }) => {
 };
 
 export default BoardList;
-
-//************* TaskList is not showing anything, _id of board is getting accessed incorrectly

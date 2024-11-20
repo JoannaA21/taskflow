@@ -1,44 +1,67 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 const BoardDetailsPage = () => {
   const loggedInUserInfo = JSON.parse(localStorage.getItem("loggedIn"));
   const token = loggedInUserInfo.token;
   const { boardId } = useParams();
-  const boardAPI = `http://localhost:4000/api/boards/${boardId}/tasks`;
-  const [boardDetails, setBoardDetails] = useState([]);
+
+  // Updated API endpoint to include board details (assuming this is how the API responds)
+  const boardAPI = `http://localhost:4000/api/boards/${boardId}`;
+  const tasksAPI = `http://localhost:4000/api/boards/${boardId}/tasks`;
+
+  const [boardDetails, setBoardDetails] = useState(null); // Store board details
+  const [tasks, setTasks] = useState([]); // Store tasks
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchBoardDetails = async () => {
+    const fetchBoardAndTasks = async () => {
       try {
-        const response = await axios.get(boardAPI, {
+        const boardResponse = await axios.get(boardAPI, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        setBoardDetails(response.data);
+        const tasksResponse = await axios.get(tasksAPI, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setBoardDetails(boardResponse.data); // Set board details (including name)
+        setTasks(tasksResponse.data); // Set tasks
       } catch (err) {
-        console.error("Error fetching board details:", err);
+        console.error("Error fetching board and tasks:", err);
         setError("Failed to load board details. Please try again.");
       }
     };
 
-    fetchBoardDetails();
+    fetchBoardAndTasks();
   }, [boardAPI, token]);
 
   return (
     <div>
-      <h1>Board Details Page</h1>
+      {boardDetails ? (
+        <>
+          <h1 className="text-4xl font-bold text-gray-900 mb-6">
+            {boardDetails.name}
+          </h1>{" "}
+          {/* Display board name */}
+          {/* <Link to={`/taskform/${boardId}`}>Add New Task</Link> */}
+        </>
+      ) : (
+        <p>Loading board details...</p>
+      )}
+
       {error && <p>{error}</p>}
 
-      {boardDetails.length > 0 ? (
+      {tasks.length > 0 ? (
         <ul>
-          {boardDetails.map((task) => (
+          {tasks.map((task) => (
             <li key={task._id}>
-              <h1>{task.title}</h1>
+              <h2>{task.title}</h2>
               <p>Status: {task.status}</p>
               <p>Priority: {task.priority}</p>
               <p>Created At: {new Date(task.createdAt).toLocaleString()}</p>

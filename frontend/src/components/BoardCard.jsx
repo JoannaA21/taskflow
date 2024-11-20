@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import BoardList from "./BoardList"; // Import BoardList component
+import { Link } from "react-router-dom";
 
 const BoardCard = () => {
   const boardAPI = "http://localhost:4000/api/boards/";
@@ -36,7 +37,6 @@ const BoardCard = () => {
 
   return (
     <div>
-      <h2>Dashboard</h2>
       {error && <p>{error}</p>}
       {boards.length > 0 ? (
         <div>

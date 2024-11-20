@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const NewBoardForm = () => {
+const BoardForm = () => {
   const api = "http://localhost:4000/api/boards/";
   const loggedInUserInfo = JSON.parse(localStorage.getItem("loggedIn"));
   const token = loggedInUserInfo.details.token;
@@ -38,4 +38,4 @@ const NewBoardForm = () => {
   );
 };
 
-export default NewBoardForm;
+export default BoardForm;
