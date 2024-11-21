@@ -32,7 +32,12 @@ const TaskList = ({ boardId }) => {
 
   if (!tasks || tasks.length === 0) {
     // Don't show anything if there are no tasks
-    return <p className="text-gray-600 italic">No tasks available</p>;
+    return (
+      <p className="text-gray-600 italic">
+        No tasks available. <br /> <br />
+        Click on this card to add tasks.
+      </p>
+    );
   }
 
   // Function to determine background color based on priority

@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import EditTaskModal from "../components/EditTaskModal";
 import DeleteTaskModal from "../components/DeleteTaskModal";
 import TaskForm from "../components/TaskForm";
+import empty_dashboard from "../assets/images/empty_dashboard.png";
 
 const BoardDetailsPage = () => {
   // Retrieve the logged-in user's information from localStorage
@@ -14,7 +15,7 @@ const BoardDetailsPage = () => {
   const boardAPI = `http://localhost:4000/api/boards/${boardId}`;
   const tasksAPI = `http://localhost:4000/api/boards/${boardId}/tasks`;
 
-  const [boardDetails, setBoardDetails] = useState(null); // Store board details
+  const [boardDetails, setBoardDetails] = useState({}); // Store board details
   const [tasks, setTasks] = useState([]); // Store tasks associated with the board
   const [error, setError] = useState(""); // Store error messages
   const [onEditModal, setOnEditModal] = useState(false); // Toggle for edit modal visibility
@@ -61,7 +62,6 @@ const BoardDetailsPage = () => {
         setBoardDetails(boardResponse.data); // Update state with board details
         setTasks(tasksResponse.data); // Update state with tasks
       } catch (err) {
-        console.log("What is wrong now???");
         console.error("Error fetching board and tasks:", err);
         setError("Failed to load board details. Please try again."); // Handle errors
       }
@@ -122,6 +122,8 @@ const BoardDetailsPage = () => {
       setError("Failed to delete the task. Please try again."); // Handle errors
     }
   };
+
+  console.log(boardDetails);
 
   return (
     <div>
@@ -208,7 +210,16 @@ const BoardDetailsPage = () => {
           ))}
         </ul>
       ) : (
-        <p>No tasks found for this board.</p>
+        <div className="flex flex-col items-center justify-center  text-center">
+          <h1 className="text-2xl font-bold mb-3">Let's get Started</h1>
+          <p>Click on Add New Board to get started.</p>
+          <img
+            src={empty_dashboard}
+            alt="Empty dashboard illustration"
+            className="w-3/4 max-w-lg mb-3"
+          />
+          <p>You don't have any boards in your catalog yet.</p>
+        </div>
       )}
 
       {/* Conditionally render the EditTaskModal */}
