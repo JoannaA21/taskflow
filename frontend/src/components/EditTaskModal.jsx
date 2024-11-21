@@ -6,7 +6,7 @@ const EditTaskModal = ({ taskId, onEditModal, onCloseEditModal }) => {
   const loggedInUserInfo = JSON.parse(localStorage.getItem("loggedIn"));
   const token = loggedInUserInfo.token;
   const taskAPI = `http://localhost:4000/api/tasks/${taskId}`; //fetch by ID, and patch by Id
-
+  const today = new Date();
   const [error, setError] = useState("");
 
   const [task, setTask] = useState({
@@ -14,7 +14,7 @@ const EditTaskModal = ({ taskId, onEditModal, onCloseEditModal }) => {
     description: "",
     status: "",
     priority: "",
-    dueDate: null,
+    dueDate: today.setDate(today.getDate() + 3), // Add 3 days
   });
 
   const [editedTask, setEditedTask] = useState({
@@ -34,18 +34,10 @@ const EditTaskModal = ({ taskId, onEditModal, onCloseEditModal }) => {
           },
         });
 
-        const fetchedTask = {
-          title: response.data.title,
-          description: response.data.description,
-          status: response.data.status,
-          priority: response.data.priority,
-          dueDate: response.data.dueDate
-            ? new Date(response.data.dueDate)
-            : null, // Ensure this is a `Date` object or null
-        };
+        const fetchedTask = response.data;
 
-        setTask(fetchedTask);
-        setEditedTask(fetchedTask); // Initialize editedTask with fetched data
+        setTask(fetchedTask); //Original task
+        setEditedTask(fetchedTask); // editable task copy
       } catch (err) {
         console.error("Error fetching task:", err);
         setError("Failed to load task. Please try again.");
@@ -62,12 +54,10 @@ const EditTaskModal = ({ taskId, onEditModal, onCloseEditModal }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (response.status === 200) {
-        // alert("Edited task successfully");
-        // navigate(`/board/${boardId}`);
-        window.location.reload();
-        onCloseEditModal();
-      }
+
+      setEditedTask(response.data);
+      console.log("Edited task successfully.", response.data);
+      onCloseEditModal();
     } catch (err) {
       console.error("Error updating task:", err);
       setError("Failed to update task. Please try again.");
@@ -91,7 +81,7 @@ const EditTaskModal = ({ taskId, onEditModal, onCloseEditModal }) => {
           value={editedTask.title}
           onChange={(e) =>
             setEditedTask({
-              ...task,
+              ...editedTask,
               title: e.target.value,
             })
           }
@@ -107,7 +97,7 @@ const EditTaskModal = ({ taskId, onEditModal, onCloseEditModal }) => {
           value={editedTask.description}
           onChange={(e) =>
             setEditedTask({
-              ...task,
+              ...editedTask,
               description: e.target.value,
             })
           }
@@ -120,7 +110,7 @@ const EditTaskModal = ({ taskId, onEditModal, onCloseEditModal }) => {
           value={editedTask.status}
           onChange={(e) =>
             setEditedTask({
-              ...task,
+              ...editedTask,
               status: e.target.value,
             })
           }
@@ -138,7 +128,7 @@ const EditTaskModal = ({ taskId, onEditModal, onCloseEditModal }) => {
           value={editedTask.priority}
           onChange={(e) =>
             setEditedTask({
-              ...task,
+              ...editedTask,
               priority: e.target.value,
             })
           }
@@ -153,14 +143,25 @@ const EditTaskModal = ({ taskId, onEditModal, onCloseEditModal }) => {
           Due Date
         </label>
         <div className="relative">
-          <DatePicker
+          <input
+            type="date"
+            value={editedTask.dueDate}
+            onChange={(e) =>
+              setEditedTask({
+                ...editedTask,
+                dueDate: e.target.value, // Use the value from the event target
+              })
+            }
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          />
+          {/* <DatePicker
             selected={editedTask.dueDate}
             onChange={(date) => setEditedTask({ ...editedTask, dueDate: date })}
             value={editedTask.dueDate}
             className="bg-white border border-gray-300 p-2 rounded-lg w-full"
             calendarClassName="z-10 bg-white" // Ensure the calendar stays on top of other elements
             clearIcon={null} // Hide clear icon if not needed
-          />
+          /> */}
         </div>
 
         <div className="flex justify-end space-x-4 mt-2">

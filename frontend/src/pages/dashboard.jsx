@@ -2,7 +2,7 @@ import React from "react";
 import BoardCard from "../components/BoardCard";
 const Dashboard = () => {
   return (
-    <div>
+    <div className="mt-20">
       <BoardCard />
     </div>
   );

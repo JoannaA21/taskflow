@@ -36,7 +36,7 @@ const BoardList = ({ boards }) => {
       {/* Board Container */}
       <div
         ref={containerRef}
-        className="flex overflow-x-scroll scroll-smooth no-scrollbar space-x-4 "
+        className="flex overflow-x-scroll scroll-smooth no-scrollbar space-x-4"
         style={{ scrollSnapType: "x mandatory" }}
       >
         {boards.map((board, index) => {
@@ -47,12 +47,12 @@ const BoardList = ({ boards }) => {
             <Link
               to={`/board/${board._id}`}
               key={board._id}
-              className="flex-shrink-0 w-1/5 max-w-sm border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:scale-105 transition duration-200"
+              className="flex-shrink-0 w-1/5 max-w-sm border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:scale-105 transition duration-200 "
               style={{ scrollSnapAlign: "center" }}
             >
               {/* Colored Top Section */}
               <div
-                className="p-4 rounded-t-lg flex flex-col justify-center"
+                className="p-4 rounded-t-lg flex flex-col justify-center "
                 style={{ backgroundColor, height: "120px" }}
               >
                 <h3 className="text-base font-semibold text-gray-900 md:text-xl dark:text-white">

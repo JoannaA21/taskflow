@@ -36,16 +36,16 @@ const BoardCard = () => {
   });
 
   return (
-    <div>
+    <>
       {error && <p>{error}</p>}
       {boards.length > 0 ? (
-        <div>
+        <>
           <BoardList boards={boards} />
-        </div>
+        </>
       ) : (
         <p>No boards to display.</p>
       )}
-    </div>
+    </>
   );
 };
 
