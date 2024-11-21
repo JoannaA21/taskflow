@@ -50,7 +50,7 @@ const SignupForm = () => {
       setErrorMessage(""); // Clear error messages if no issues found
 
       const response = await axios.post(signupAPI, user); //send user to the backend
-      console.log(response);
+      //console.log(response);
 
       if (response.status === 200 || response.status === 201) {
         console.log("Signup successful!", response.data);

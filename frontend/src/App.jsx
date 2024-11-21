@@ -11,9 +11,6 @@ import TaskForm from "./components/TaskForm";
 import BoardForm from "./components/BoardForm";
 
 function App() {
-  // const apiUserLoggedIn = `http://localhost:4000/api/users/${id}`;
-  // const apiBoardList = `http://localhost:4000/api/boards/${id}`;
-
   return (
     <>
       <div>

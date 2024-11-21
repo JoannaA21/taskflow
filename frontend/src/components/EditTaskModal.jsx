@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import DatePicker from "react-date-picker";
 
-const EditTaskModal = ({ taskId, boardId, onOpenModal, onCloseModal }) => {
+const EditTaskModal = ({ taskId, onEditModal, onCloseEditModal }) => {
   const loggedInUserInfo = JSON.parse(localStorage.getItem("loggedIn"));
   const token = loggedInUserInfo.token;
   const taskAPI = `http://localhost:4000/api/tasks/${taskId}`; //fetch by ID, and patch by Id
@@ -25,8 +24,6 @@ const EditTaskModal = ({ taskId, boardId, onOpenModal, onCloseModal }) => {
     priority: task.priority,
     dueDate: task.dueDate,
   });
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTask = async () => {
@@ -69,7 +66,7 @@ const EditTaskModal = ({ taskId, boardId, onOpenModal, onCloseModal }) => {
         // alert("Edited task successfully");
         // navigate(`/board/${boardId}`);
         window.location.reload();
-        onCloseModal();
+        onCloseEditModal();
       }
     } catch (err) {
       console.error("Error updating task:", err);
@@ -77,7 +74,7 @@ const EditTaskModal = ({ taskId, boardId, onOpenModal, onCloseModal }) => {
     }
   };
 
-  if (!onOpenModal) return null;
+  if (!onEditModal) return null;
 
   return (
     <div className=" fixed inset-0 bg-gray-400 bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
@@ -175,7 +172,7 @@ const EditTaskModal = ({ taskId, boardId, onOpenModal, onCloseModal }) => {
           </button>
           <button
             type="button"
-            onClick={onCloseModal}
+            onClick={onCloseEditModal}
             className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
           >
             Cancel
