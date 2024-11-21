@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import EditTaskModal from "../components/EditTaskModal";
 import DeleteTaskModal from "../components/DeleteTaskModal";
+import TaskForm from "../components/TaskForm";
 
 const BoardDetailsPage = () => {
   // Retrieve the logged-in user's information from localStorage
@@ -18,6 +19,7 @@ const BoardDetailsPage = () => {
   const [error, setError] = useState(""); // Store error messages
   const [onEditModal, setOnEditModal] = useState(false); // Toggle for edit modal visibility
   const [onDeleteModal, setOnDeleteModal] = useState(false); // Toggle for delete modal visibility
+  const [onAddNewTaskModal, setOnAddNewTaskModal] = useState(false); //Toggle for add new task modal visibility
   const [selectedTaskId, setSelectedTaskId] = useState(null); // Store the ID of the selected task
 
   // Function to close the edit modal
@@ -29,6 +31,12 @@ const BoardDetailsPage = () => {
   // Function to close the delete modal
   const onCloseDeleteModal = () => {
     setOnDeleteModal(false);
+    setSelectedTaskId(null); // Reset the selected task when closing the modal
+  };
+
+  // Function to close the Add New Task modal
+  const onCloseAddNewTaskModal = () => {
+    setOnAddNewTaskModal(false);
     setSelectedTaskId(null); // Reset the selected task when closing the modal
   };
 
@@ -81,6 +89,12 @@ const BoardDetailsPage = () => {
     setOnEditModal(true); // Show the edit modal
   };
 
+  // Open the edit modal for a specific task
+  const openAddNewTaskModal = (taskId) => {
+    setSelectedTaskId(taskId); // Set the selected task ID
+    setOnAddNewTaskModal(true); // Show the edit modal
+  };
+
   // Open the delete modal for a specific task
   const handleDeleteModal = (taskId) => {
     setSelectedTaskId(taskId); // Set the selected task ID
@@ -116,6 +130,9 @@ const BoardDetailsPage = () => {
           <h1 className="text-4xl font-bold text-gray-900 mb-6 text-center">
             {boardDetails.name}
           </h1>
+          <p onClick={openAddNewTaskModal} className="cursor-pointer">
+            Add New Task
+          </p>
         </div>
       ) : (
         <p>Loading board details...</p>
@@ -203,6 +220,15 @@ const BoardDetailsPage = () => {
         <DeleteTaskModal
           onCloseDeleteModal={onCloseDeleteModal}
           confirmDeleteTask={confirmDeleteTask}
+        />
+      )}
+
+      {/* Conditionally render the Add New Task Modal */}
+      {onAddNewTaskModal && (
+        <TaskForm
+          onCloseAddNewTaskModal={onCloseAddNewTaskModal}
+          tasks={tasks}
+          setTasks={setTasks}
         />
       )}
     </div>
