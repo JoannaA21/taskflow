@@ -1,33 +1,21 @@
 import { useState, useEffect } from "react";
-import { useLocation, Link, Outlet, useParams } from "react-router-dom";
+import { Link, Outlet, useParams, useNavigate } from "react-router-dom";
 import Lottie from "lottie-react"; // Import Lottie
 import animationData from "../../assets/lottie/Animation-taskManagement - 1731885778267.json";
 
 const Nav = () => {
-  const location = useLocation(); // Get the current location
   const loggedInUserInfo = JSON.parse(localStorage.getItem("loggedIn"));
   const user = loggedInUserInfo.details.username;
-  const { boardId } = useParams();
-  const [navText, setNavtext] = useState("");
-  const [linkTo, setLinkTo] = useState("");
+  const navigate = useNavigate();
 
-  // Update navText and linkTo based on the current location/path
-  useEffect(() => {
-    if (location.pathname === "/dashboard") {
-      setNavtext("Add New Board");
-      setLinkTo("/boardform"); // link to the static /boardform
-    } else if (location.pathname.startsWith("/board/")) {
-      setNavtext("Add New Task");
-      setLinkTo(`/taskform/${boardId}`); // link to the dynamic task form route
-    } else {
-      setNavtext("");
-      setLinkTo(""); // No link for other paths
-    }
-  }, [location.pathname, boardId]);
+  const logout = () => {
+    localStorage.removeItem("loggedIn");
+    navigate("/");
+  };
 
   return (
-    <nav className="bg-white border-gray-200 dark:bg-gray-900">
-      <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4 ">
+    <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
+      <div className="justify-between items-center mx-auto max-w-screen-xl p-4">
         <Link
           to="/dashboard"
           className="flex items-center space-x-3 rtl:space-x-reverse"
@@ -38,17 +26,14 @@ const Nav = () => {
           </span>
         </Link>
         <div className="flex items-center space-x-6 rtl:space-x-reverse">
-          {navText && linkTo && (
-            <Link
-              to={linkTo} // Navigate to the corresponding route
-              className="text-sm  dark:text-white hover:text-primary-700"
-            >
-              {navText}
-            </Link>
-          )}
-
           <p className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-            {user}
+            Welcome back, {user}
+          </p>
+          <p
+            className="text-gray-500 cursor-pointer hover:text-purple-700"
+            onClick={logout}
+          >
+            Logout
           </p>
         </div>
         <Outlet /> {/* This is where the routed content will go */}
