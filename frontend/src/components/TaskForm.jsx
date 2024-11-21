@@ -22,6 +22,8 @@ const TaskForm = ({
     dueDate: null,
   });
 
+  const [error, setError] = useState("");
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -35,7 +37,12 @@ const TaskForm = ({
     e.preventDefault();
 
     if (!newTask.title) {
-      alert("Please fill out all required fields.");
+      setError("Title field must be field out.");
+      return;
+    }
+
+    if (!newTask.dueDate) {
+      setError("Due date field must be field out.");
       return;
     }
 
@@ -66,6 +73,10 @@ const TaskForm = ({
           className="bg-white shadow-lg rounded-lg p-8 max-w-lg w-full space-y-6"
           onSubmit={addTask}
         >
+          {error && (
+            <p className="text-red-700 text-md bg-red-200 p-2 w-fit">{error}</p>
+          )}
+
           <label className="block text-sm font-medium text-gray-900 dark:text-white text-left">
             Task Title
           </label>

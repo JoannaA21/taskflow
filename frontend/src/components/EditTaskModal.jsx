@@ -56,7 +56,7 @@ const EditTaskModal = ({ taskId, onEditModal, onCloseEditModal }) => {
       });
 
       setEditedTask(response.data);
-      console.log("Edited task successfully.", response.data);
+      //console.log("Edited task successfully.", response.data);
       onCloseEditModal();
     } catch (err) {
       console.error("Error updating task:", err);

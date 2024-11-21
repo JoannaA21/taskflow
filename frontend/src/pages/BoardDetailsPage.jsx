@@ -152,7 +152,7 @@ const BoardDetailsPage = () => {
           {tasks.map((task) => (
             <li
               key={task._id}
-              className={`p-6 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 ${getPriorityColor(
+              className={`p-6 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:scale-105 transition duration-200 ${getPriorityColor(
                 task.priority
               )}`}
             >
