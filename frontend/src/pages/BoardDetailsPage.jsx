@@ -127,13 +127,17 @@ const BoardDetailsPage = () => {
     <div>
       {/* Display board details */}
       {boardDetails ? (
-        <div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-6 text-center">
+        <div className="pt-10 flex items-center justify-between mt-20">
+          <h1 className="text-4xl font-bold text-gray-900 mb-6 mx-auto">
             {boardDetails.name}
           </h1>
-          <p onClick={openAddNewTaskModal} className="cursor-pointer">
+          <button
+            type="button"
+            onClick={openAddNewTaskModal}
+            className="cursor-pointer font-medium rounded-lg text-sm p-3 text-white bg-primary-500 hover:bg-purple-700"
+          >
             Add New Task
-          </p>
+          </button>
         </div>
       ) : (
         <p>Loading board details...</p>
@@ -144,67 +148,65 @@ const BoardDetailsPage = () => {
 
       {/* Display tasks */}
       {tasks.length > 0 ? (
-        <div className="task-list-container overflow-auto h-full">
-          <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {tasks.map((task) => (
-              <li
-                key={task._id}
-                className={`p-6 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 ${getPriorityColor(
-                  task.priority
-                )}`}
-              >
-                <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  {task.title}
-                </h2>
-                {task.description && <p>Description: {task.description}</p>}
-                <p>Status: {task.status}</p>
-                <p>Priority: {task.priority}</p>
-                <p>Due Date: {task.dueDate}</p>
-                <div className="flex justify-end space-x-4 mt-2">
-                  {/* Edit task icon */}
-                  <svg
-                    className="w-6 h-6 text-gray-800 dark:text-white cursor-pointer"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    onClick={() => openEditModal(task._id)}
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"
-                    />
-                  </svg>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 m-5">
+          {tasks.map((task) => (
+            <li
+              key={task._id}
+              className={`p-6 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 ${getPriorityColor(
+                task.priority
+              )}`}
+            >
+              <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                {task.title}
+              </h2>
+              {task.description && <p>Description: {task.description}</p>}
+              <p>Status: {task.status}</p>
+              <p>Priority: {task.priority}</p>
+              <p>Due Date: {task.dueDate}</p>
+              <div className="flex justify-end space-x-4 mt-2">
+                {/* Edit task icon */}
+                <svg
+                  className="w-6 h-6 text-gray-800 dark:text-white cursor-pointer"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  onClick={() => openEditModal(task._id)}
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"
+                  />
+                </svg>
 
-                  {/* Delete task icon */}
-                  <svg
-                    className="w-6 h-6 text-gray-800 dark:text-white cursor-pointer"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    onClick={() => handleDeleteModal(task._id)}
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
-                    />
-                  </svg>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+                {/* Delete task icon */}
+                <svg
+                  className="w-6 h-6 text-gray-800 dark:text-white cursor-pointer"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  onClick={() => handleDeleteModal(task._id)}
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+                  />
+                </svg>
+              </div>
+            </li>
+          ))}
+        </ul>
       ) : (
         <p>No tasks found for this board.</p>
       )}
