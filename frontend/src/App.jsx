@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import BoardDetailsPage from "./pages/BoardDetailsPage";
 import TaskForm from "./components/TaskForm";
 import BoardForm from "./components/BoardForm";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               <Route path="/taskform/:boardId" element={<TaskForm />} />
               <Route path="/boardform" element={<BoardForm />} />
             </Route>
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Router>
       </div>

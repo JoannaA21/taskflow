@@ -84,6 +84,68 @@ const BoardDetailsPage = () => {
     }
   };
 
+  const getStatusIcon = (status) => {
+    switch (status.toLowerCase()) {
+      case "todo":
+        return (
+          <svg
+            className="h-8 w-8 text-red-500"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            {" "}
+            <circle cx="12" cy="12" r="10" />{" "}
+            <line x1="15" y1="9" x2="9" y2="15" />{" "}
+            <line x1="9" y1="9" x2="15" y2="15" />
+          </svg>
+        );
+      case "done":
+        return (
+          <svg
+            className="h-8 w-8 text-green-500"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            {" "}
+            <path stroke="none" d="M0 0h24v24H0z" />{" "}
+            <circle cx="12" cy="12" r="9" /> <path d="M9 12l2 2l4 -4" />
+          </svg>
+        );
+      default:
+        return (
+          <svg
+            className="h-8 w-8 text-blue-500"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            {" "}
+            <line x1="12" y1="2" x2="12" y2="6" />{" "}
+            <line x1="12" y1="18" x2="12" y2="22" />{" "}
+            <line x1="4.93" y1="4.93" x2="7.76" y2="7.76" />{" "}
+            <line x1="16.24" y1="16.24" x2="19.07" y2="19.07" />{" "}
+            <line x1="2" y1="12" x2="6" y2="12" />{" "}
+            <line x1="18" y1="12" x2="22" y2="12" />{" "}
+            <line x1="4.93" y1="19.07" x2="7.76" y2="16.24" />{" "}
+            <line x1="16.24" y1="7.76" x2="19.07" y2="4.93" />
+          </svg>
+        );
+    }
+  };
+
   // Open the edit modal for a specific task
   const openEditModal = (taskId) => {
     setSelectedTaskId(taskId); // Set the selected task ID
@@ -152,13 +214,20 @@ const BoardDetailsPage = () => {
           {tasks.map((task) => (
             <li
               key={task._id}
-              className={`p-6 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:scale-105 transition duration-200 ${getPriorityColor(
+              className={`relative p-6 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:scale-105 transition duration-200 ${getPriorityColor(
                 task.priority
-              )}`}
+              )} ${getStatusIcon(task.status)}`}
             >
-              <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                {task.title}
-              </h2>
+              <div className="absolute top-2 right-2">
+                {getStatusIcon(task.status)}
+              </div>
+
+              <div>
+                {/* ADD getStatusIcon somewhere here!!! */}
+                <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                  {task.title}
+                </h2>
+              </div>
               {task.description && <p>Description: {task.description}</p>}
               <p>Status: {task.status}</p>
               <p>Priority: {task.priority}</p>
@@ -166,7 +235,7 @@ const BoardDetailsPage = () => {
               <div className="flex justify-end space-x-4 mt-2">
                 {/* Edit task icon */}
                 <svg
-                  className="w-6 h-6 text-gray-800 dark:text-white cursor-pointer"
+                  className="w-6 h-6 dark:text-white cursor-pointer"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
