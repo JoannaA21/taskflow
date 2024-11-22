@@ -35,7 +35,9 @@ const TaskList = ({ boardId }) => {
     return (
       <p className="text-gray-600 italic">
         No tasks available. <br /> <br />
-        Click on this card to add tasks.
+        <span className="hover:underline">
+          Click on this card to add tasks.
+        </span>
       </p>
     );
   }

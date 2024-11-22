@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 import BoardList from "./BoardList"; // Import BoardList component
 import empty_dashboard from "../assets/images/empty_dashboard.png";
 
 const BoardCard = () => {
-  const boardAPI = "http://localhost:4000/api/boards/";
+  const boardAPI = "http://localhost:4000/api/boards/"; //fetch all boards
   const loggedInUserInfo = JSON.parse(localStorage.getItem("loggedIn"));
   const token = loggedInUserInfo.token;
+
   // const userId = loggedInUserInfo.details;
 
   // console.log("token", token);
@@ -31,13 +33,13 @@ const BoardCard = () => {
     };
 
     fetchBoards();
-  });
+  }, []);
 
   return (
     <>
       {boards.length > 0 ? (
         <>
-          <BoardList boards={boards} />
+          <BoardList boards={boards} setBoards={setBoards} />
         </>
       ) : (
         <div className="flex flex-col items-center justify-center  text-center">

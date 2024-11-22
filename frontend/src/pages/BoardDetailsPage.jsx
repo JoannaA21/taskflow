@@ -179,6 +179,7 @@ const BoardDetailsPage = () => {
         prevTasks.filter((task) => task._id !== selectedTaskId)
       );
       onCloseDeleteModal(); // Close the delete modal
+      window.location.reload();
     } catch (err) {
       console.error("Error deleting task:", err);
       setError("Failed to delete the task. Please try again."); // Handle errors
@@ -223,7 +224,6 @@ const BoardDetailsPage = () => {
               </div>
 
               <div>
-                {/* ADD getStatusIcon somewhere here!!! */}
                 <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                   {task.title}
                 </h2>
@@ -232,6 +232,7 @@ const BoardDetailsPage = () => {
               <p>Status: {task.status}</p>
               <p>Priority: {task.priority}</p>
               <p>Due Date: {new Date(task.dueDate).toLocaleDateString()}</p>
+
               <div className="flex justify-end space-x-4 mt-2">
                 {/* Edit task icon */}
                 <svg
