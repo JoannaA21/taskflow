@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import DatePicker from "react-date-picker";
 
 const EditTaskModal = ({ taskId, onEditModal, onCloseEditModal }) => {
   const loggedInUserInfo = JSON.parse(localStorage.getItem("loggedIn"));
@@ -55,6 +54,11 @@ const EditTaskModal = ({ taskId, onEditModal, onCloseEditModal }) => {
         },
       });
 
+      if (new Date(editedTask.dueDate).getTime() < Date.now()) {
+        setError("The due date cannot be earlier than today.");
+        return;
+      }
+
       const updatedTask = response.data;
 
       // Update both the original task and the editable task states
@@ -72,11 +76,15 @@ const EditTaskModal = ({ taskId, onEditModal, onCloseEditModal }) => {
   if (!onEditModal) return null;
 
   return (
-    <div className=" fixed inset-0 bg-gray-400 bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+    <div className=" fixed inset-0 z-20 bg-gray-400 bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
       <form
         className="bg-white shadow-lg rounded-lg p-8 max-w-lg w-full space-y-6"
         onSubmit={editTask}
       >
+        {error && (
+          <p className="text-red-700 text-md bg-red-200 p-2 w-fit">{error}</p>
+        )}
+
         <label className="block text-sm font-medium text-gray-900 dark:text-white text-left">
           Task Title
         </label>

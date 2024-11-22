@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import DatePicker from "react-date-picker";
 
 const TaskForm = ({
   tasks,
@@ -46,6 +45,11 @@ const TaskForm = ({
       return;
     }
 
+    if (new Date(newTask.dueDate).getTime() < Date.now()) {
+      setError("The due date cannot be earlier than today.");
+      return;
+    }
+
     try {
       const response = await axios.post(createTaskInBoardAPI, newTask, {
         headers: {
@@ -68,7 +72,7 @@ const TaskForm = ({
 
   return (
     <>
-      <div className=" fixed inset-0 bg-gray-400 bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+      <div className=" fixed inset-0 z-20 bg-gray-400 bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
         <form
           className="bg-white shadow-lg rounded-lg p-8 max-w-lg w-full space-y-6"
           onSubmit={addTask}

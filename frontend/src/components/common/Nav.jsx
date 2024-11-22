@@ -97,7 +97,7 @@ const Nav = () => {
   return (
     <>
       <nav
-        className={`bg-primary-700 dark:bg-gray-900 fixed w-full top-0 start-0 border-b border-gray-200 dark:border-gray-600 transition-transform duration-300 ${
+        className={`bg-primary-700 dark:bg-gray-900 fixed w-full top-0 z-10 start-0 border-b border-gray-200 dark:border-gray-600 transition-transform duration-300 ${
           isScrollingDown ? "-translate-y-full" : "translate-y-0"
         }`}
       >

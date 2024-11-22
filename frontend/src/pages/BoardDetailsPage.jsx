@@ -231,7 +231,7 @@ const BoardDetailsPage = () => {
               {task.description && <p>Description: {task.description}</p>}
               <p>Status: {task.status}</p>
               <p>Priority: {task.priority}</p>
-              <p>Due Date: {task.dueDate}</p>
+              <p>Due Date: {new Date(task.dueDate).toLocaleDateString()}</p>
               <div className="flex justify-end space-x-4 mt-2">
                 {/* Edit task icon */}
                 <svg

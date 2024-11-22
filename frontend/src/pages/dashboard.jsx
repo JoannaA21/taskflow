@@ -21,9 +21,7 @@ const Dashboard = () => {
   return (
     <>
       <div className="pt-10 flex items-center justify-between mt-20">
-        <h1 className="text-4xl font-bold text-gray-900 mx-auto">
-          Welcome back, {user}
-        </h1>
+        <h1 className="text-3xl font-bold text-primary-700 ml-5">Hi, {user}</h1>
         <button
           onClick={onOpenAddNewBoardModal}
           type="button"
