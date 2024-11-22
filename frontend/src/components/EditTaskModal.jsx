@@ -55,7 +55,12 @@ const EditTaskModal = ({ taskId, onEditModal, onCloseEditModal }) => {
         },
       });
 
-      setEditedTask(response.data);
+      const updatedTask = response.data;
+
+      // Update both the original task and the editable task states
+      setTask(updatedTask);
+      setEditedTask(updatedTask);
+      // setEditedTask(response.data);
       //console.log("Edited task successfully.", response.data);
       onCloseEditModal();
     } catch (err) {
@@ -154,14 +159,6 @@ const EditTaskModal = ({ taskId, onEditModal, onCloseEditModal }) => {
             }
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
-          {/* <DatePicker
-            selected={editedTask.dueDate}
-            onChange={(date) => setEditedTask({ ...editedTask, dueDate: date })}
-            value={editedTask.dueDate}
-            className="bg-white border border-gray-300 p-2 rounded-lg w-full"
-            calendarClassName="z-10 bg-white" // Ensure the calendar stays on top of other elements
-            clearIcon={null} // Hide clear icon if not needed
-          /> */}
         </div>
 
         <div className="flex justify-end space-x-4 mt-2">

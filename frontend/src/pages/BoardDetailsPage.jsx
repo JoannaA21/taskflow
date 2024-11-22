@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import EditTaskModal from "../components/EditTaskModal";
 import DeleteTaskModal from "../components/DeleteTaskModal";
 import TaskForm from "../components/TaskForm";
-import empty_dashboard from "../assets/images/empty_dashboard.png";
+import empty_boardDetail from "../assets/images/empty_boardDetails.png";
 
 const BoardDetailsPage = () => {
   // Retrieve the logged-in user's information from localStorage
@@ -68,7 +68,7 @@ const BoardDetailsPage = () => {
     };
 
     fetchBoardAndTasks();
-  }, [boardAPI, token]); // Dependencies: boardAPI and token
+  }, [boardAPI, tasksAPI, token]); // Dependencies: boardAPI and token
 
   // Function to get the background color for task priority
   const getPriorityColor = (priority) => {
@@ -123,22 +123,20 @@ const BoardDetailsPage = () => {
     }
   };
 
-  console.log(boardDetails);
-
   return (
     <div>
       {/* Display board details */}
       {boardDetails ? (
         <div className="pt-10 flex items-center justify-between mt-20">
-          <h1 className="text-4xl font-bold text-gray-900 mb-6 mx-auto">
+          <h1 className="text-4xl font-bold text-gray-900 mb-6 mx-auto ">
             {boardDetails.name}
           </h1>
           <button
             type="button"
             onClick={openAddNewTaskModal}
-            className="cursor-pointer font-medium rounded-lg text-sm p-3 text-white bg-primary-500 hover:bg-purple-700"
+            className="cursor-pointer font-medium rounded-lg mr-3 text-sm p-3 text-white bg-primary-500 hover:bg-purple-700"
           >
-            Add New Task
+            <span className="font-medium text-lg">+Add New Task </span>
           </button>
         </div>
       ) : (
@@ -210,15 +208,15 @@ const BoardDetailsPage = () => {
           ))}
         </ul>
       ) : (
-        <div className="flex flex-col items-center justify-center  text-center">
-          <h1 className="text-2xl font-bold mb-3">Let's get Started</h1>
-          <p>Click on Add New Board to get started.</p>
+        <div className="flex flex-col items-center justify-center mt-3 text-center">
           <img
-            src={empty_dashboard}
-            alt="Empty dashboard illustration"
-            className="w-3/4 max-w-lg mb-3"
+            src={empty_boardDetail}
+            alt="task illustration"
+            className="w-1/2 max-w-sm mb-3"
           />
-          <p>You don't have any boards in your catalog yet.</p>
+          <p>Click on Add New Task to get started.</p>
+
+          <p>You don't have any tasks yet.</p>
         </div>
       )}
 

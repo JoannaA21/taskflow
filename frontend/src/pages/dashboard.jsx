@@ -29,7 +29,7 @@ const Dashboard = () => {
           type="button"
           className="cursor-pointer font-medium rounded-lg text-sm p-3 text-white bg-primary-500 hover:bg-purple-700"
         >
-          Add New Board
+          <span className="font-medium text-lg"> +Add New Board</span>
         </button>
       </div>
 

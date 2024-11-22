@@ -5,9 +5,10 @@ const getAllTaskFromBoard = async (req, res) => {
   //route = boards/:boardId/tasks
   try {
     const tasks = await Task.find({ boardId: req.params.boardId });
-    if (tasks.length === 0) {
-      return res.status(404).json({ message: "No tasks found." });
-    }
+
+    // if (tasks.length === 0) {
+    //   return res.status(404).json({ message: "No tasks found." });
+    // }
 
     res.status(200).json(tasks);
   } catch (err) {
