@@ -39,12 +39,6 @@ const BoardList = ({ boards, setBoards }) => {
     }
   };
 
-  const onOpenDeleteModal = (boardId) => {
-    setOnDeleteModal(true);
-    setSelectedBoardId(boardId);
-    fetchTasks(boardId); // Explicitly fetch tasks here
-  };
-
   const handleScroll = (direction) => {
     const container = containerRef.current;
     const scrollAmount = container.offsetWidth; // Width of the visible container
@@ -76,7 +70,6 @@ const BoardList = ({ boards, setBoards }) => {
         prevBoards.filter((board) => board._id !== selectedBoardId)
       );
 
-      //window.location.reload;
       setSelectedBoardId(null);
       onCloseDeleteModal(); // Close the delete modal
     } catch {
@@ -85,11 +78,12 @@ const BoardList = ({ boards, setBoards }) => {
     }
   };
 
-  // //Function to open the delete modal
-  // const onOpenDeleteModal = (boardId) => {
-  //   setOnDeleteModal(true); // Pass the board details to the modal
-  //   setSelectedBoardId(boardId);
-  // };
+  //Function to open the delete modal
+  const onOpenDeleteModal = (boardId) => {
+    setOnDeleteModal(true);
+    setSelectedBoardId(boardId);
+    fetchTasks(boardId);
+  };
 
   // Function to close the delete modal
   const onCloseDeleteModal = () => {

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
 import BoardList from "./BoardList"; // Import BoardList component
 import empty_dashboard from "../assets/images/empty_dashboard.png";
 

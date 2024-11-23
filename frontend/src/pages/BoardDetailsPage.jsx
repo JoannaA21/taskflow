@@ -195,10 +195,6 @@ const BoardDetailsPage = () => {
             {boardDetails.name}
           </h1>
 
-          {/* ************** FILTER **************** */}
-
-          {/* ************** FILTER **************** */}
-
           <button
             type="button"
             onClick={openAddNewTaskModal}
