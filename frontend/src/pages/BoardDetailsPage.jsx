@@ -194,6 +194,11 @@ const BoardDetailsPage = () => {
           <h1 className="text-4xl font-bold text-gray-900 mb-6 mx-auto ">
             {boardDetails.name}
           </h1>
+
+          {/* ************** FILTER **************** */}
+
+          {/* ************** FILTER **************** */}
+
           <button
             type="button"
             onClick={openAddNewTaskModal}

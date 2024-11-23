@@ -122,6 +122,7 @@ const BoardList = ({ boards, setBoards }) => {
 
           return (
             <div
+              key={board._id}
               className="flex-shrink-0 mt-10 w-1/5 max-w-sm border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:scale-105 transition duration-200 "
               style={{ scrollSnapAlign: "center" }}
             >

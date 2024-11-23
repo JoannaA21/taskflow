@@ -31,12 +31,12 @@ const BoardForm = ({ onOpenAddNewBoardModal, onCloseAddNewBoardModal }) => {
     }
 
     try {
-      const res = axios.post(boardAPI, newBoard, {
+      const res = await axios.post(boardAPI, newBoard, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(res);
+      //console.log(res);
       onCloseAddNewBoardModal();
     } catch (err) {
       err.response?.data?.message || "An error occurred creating a new task.";

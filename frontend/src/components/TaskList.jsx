@@ -19,7 +19,7 @@ const TaskList = ({ boardId }) => {
             },
           }
         );
-        console.log("response", response.data);
+        // console.log("response", response.data);
         setTasks(response.data);
       } catch (err) {
         console.error("Error fetching tasks:", err);

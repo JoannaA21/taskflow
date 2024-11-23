@@ -4,7 +4,7 @@ const DeleteBoardModal = ({
   confirmDeleteBoard,
 }) => {
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50 rounded-lg">
       {taskCount && (
         <div className="bg-red-600 w-96 md:w-[28rem] p-8 rounded-lg shadow-lg text-center">
           <>

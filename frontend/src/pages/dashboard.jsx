@@ -46,5 +46,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-//Add a delete button on each board card

@@ -30,7 +30,7 @@ const LoginForm = () => {
     try {
       const response = await axios.post(api, userLogin);
       let userLoginInfo;
-      console.log(response.data);
+      //console.log(response.data);
       if (response.status === 200) {
         userLoginInfo = {
           details: response.data.details.details,
