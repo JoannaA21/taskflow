@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import EditTaskModal from "../components/EditTaskModal";
 import DeleteTaskModal from "../components/DeleteTaskModal";
 import TaskForm from "../components/TaskForm";
@@ -70,14 +70,26 @@ const BoardDetailsPage = () => {
         }
       );
 
+      // Store deleted task in history with the user's info
+      const deletedTask = response.data;
+
+      // Attach the logged-in user’s information locally
+      const taskWithUserInfo = {
+        ...deletedTask,
+        deletedBy: loggedInUserInfo.details.username, // Add the logged-in user’s username
+        deletedAt: new Date().toISOString(), // Optionally, store when the task was deleted
+      };
+
+      // Add the deleted task to the history
+      updatedHisotry = [...storedHistory, taskWithUserInfo];
+
+      // Save the updated history back to localStorage
+      localStorage.setItem("history", JSON.stringify(updatedHisotry));
+
       // Remove the task from the UI
       setTasks((prevTasks) =>
         prevTasks.filter((task) => task._id !== selectedTaskId)
       );
-
-      //Add deleted data to updatedHistory
-      updatedHisotry = [...storedHistory, response.data];
-      localStorage.setItem("history", JSON.stringify(updatedHisotry));
 
       onCloseDeleteModal(); // Close the delete modal
     } catch (err) {
@@ -212,6 +224,11 @@ const BoardDetailsPage = () => {
           <h1 className="text-4xl font-bold text-gray-900 mb-6 mx-auto ">
             {boardDetails.name}
           </h1>
+          <Link to="/history">
+            <p className="cursor-pointer font-medium hover:underline hover:text-primary-700 text-gray-500 italic mr-3">
+              View History
+            </p>
+          </Link>
 
           <button
             type="button"
@@ -236,7 +253,13 @@ const BoardDetailsPage = () => {
               key={task._id}
               className={`relative p-6 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:scale-105 transition duration-200 ${getPriorityColor(
                 task.priority
-              )} ${getStatusIcon(task.status)}`}
+              )} ${getStatusIcon(task.status)}
+              ${
+                task.status.toLowerCase() === "done"
+                  ? "line-through opacity-50"
+                  : ""
+              }
+              `}
             >
               <div className="absolute top-2 right-2">
                 {getStatusIcon(task.status)}
@@ -247,10 +270,23 @@ const BoardDetailsPage = () => {
                   {task.title}
                 </h2>
               </div>
-              {task.description && <p>Description: {task.description}</p>}
-              <p>Status: {task.status}</p>
-              <p>Priority: {task.priority}</p>
-              <p>Due Date: {new Date(task.dueDate).toLocaleDateString()}</p>
+              {task.description && (
+                <p>
+                  <span className="italic font-bold">Description:</span>{" "}
+                  {task.description}
+                </p>
+              )}
+              <p>
+                <span className="italic font-bold">Status:</span> {task.status}
+              </p>
+              <p>
+                <span className="italic font-bold">Priority:</span>{" "}
+                {task.priority}
+              </p>
+              <p>
+                <span className="italic font-bold">Due Date:</span>{" "}
+                {new Date(task.dueDate).toLocaleDateString()}
+              </p>
 
               <div className="flex justify-end space-x-4 mt-2">
                 {/* Edit task icon */}
@@ -312,10 +348,9 @@ const BoardDetailsPage = () => {
       {/* Conditionally render the EditTaskModal */}
       {onEditModal && selectedTaskId && (
         <EditTaskModal
-          taskId={selectedTaskId}
-          boardId={boardId}
           onEditModal={onEditModal}
           onCloseEditModal={onCloseEditModal}
+          taskId={selectedTaskId}
           onUpdateTask={handleTaskUpdate}
         />
       )}

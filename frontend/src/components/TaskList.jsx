@@ -66,11 +66,24 @@ const TaskList = ({ boardId }) => {
               task.priority
             )}`}
           >
-            <h5>Task name: {task.title}</h5>
-            <p>{task.description}</p>
-            <p>Status: {task.status}</p>
-            <p>Priority: {task.priority}</p>
-            <p>Due Date: {new Date(task.dueDate).toLocaleDateString()}</p>
+            <p>
+              <span className="italic font-bold">Task name:</span> {task.title}
+            </p>
+            <p>
+              <span className="italic font-bold">Description:</span>
+              {task.description}
+            </p>
+            <p>
+              <span className="italic font-bold">Status:</span> {task.status}
+            </p>
+            <p>
+              <span className="italic font-bold">Priority:</span>
+              {task.priority}
+            </p>
+            <p>
+              <span className="italic font-bold">Due Date:</span>
+              {new Date(task.dueDate).toLocaleDateString()}
+            </p>
           </li>
         ))}
       </ul>
