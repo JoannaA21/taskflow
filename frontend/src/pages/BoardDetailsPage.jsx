@@ -12,6 +12,11 @@ const BoardDetailsPage = () => {
   const token = loggedInUserInfo.token; // Extract the user's token for API requests
   const { boardId } = useParams(); // Get the boardId from the URL parameters
 
+  //For history page
+  // Retrieve existing history from local storage
+  const storedHistory = JSON.parse(localStorage.getItem("history")) || [];
+  let updatedHisotry = [];
+
   const boardAPI = `http://localhost:4000/api/boards/${boardId}`;
   const tasksAPI = `http://localhost:4000/api/boards/${boardId}/tasks`;
 
@@ -22,24 +27,6 @@ const BoardDetailsPage = () => {
   const [onDeleteModal, setOnDeleteModal] = useState(false); // Toggle for delete modal visibility
   const [onAddNewTaskModal, setOnAddNewTaskModal] = useState(false); //Toggle for add new task modal visibility
   const [selectedTaskId, setSelectedTaskId] = useState(null); // Store the ID of the selected task
-
-  // Function to close the edit modal
-  const onCloseEditModal = () => {
-    setOnEditModal(false);
-    setSelectedTaskId(null); // Reset the selected task when closing the modal
-  };
-
-  // Function to close the delete modal
-  const onCloseDeleteModal = () => {
-    setOnDeleteModal(false);
-    setSelectedTaskId(null); // Reset the selected task when closing the modal
-  };
-
-  // Function to close the Add New Task modal
-  const onCloseAddNewTaskModal = () => {
-    setOnAddNewTaskModal(false);
-    setSelectedTaskId(null); // Reset the selected task when closing the modal
-  };
 
   // Fetch board details and tasks when the component loads
   useEffect(() => {
@@ -59,16 +46,90 @@ const BoardDetailsPage = () => {
           },
         });
 
-        setBoardDetails(boardResponse.data); // Update state with board details
-        setTasks(tasksResponse.data); // Update state with tasks
+        setBoardDetails(boardResponse.data);
+        setTasks(tasksResponse.data);
       } catch (err) {
         console.error("Error fetching board and tasks:", err);
-        setError("Failed to load board details. Please try again."); // Handle errors
+        setError("Failed to load board details. Please try again.");
       }
     };
 
     fetchBoardAndTasks();
-  }, [boardAPI, tasksAPI, token]); // Dependencies: boardAPI and token
+  }, [boardAPI, tasksAPI, token]);
+
+  // Confirm and delete a task
+  const confirmDeleteTask = async () => {
+    try {
+      // Make DELETE request to the API
+      const response = await axios.delete(
+        `http://localhost:4000/api/tasks/${selectedTaskId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Remove the task from the UI
+      setTasks((prevTasks) =>
+        prevTasks.filter((task) => task._id !== selectedTaskId)
+      );
+
+      //Add deleted data to updatedHistory
+      updatedHisotry = [...storedHistory, response.data];
+      localStorage.setItem("history", JSON.stringify(updatedHisotry));
+
+      onCloseDeleteModal(); // Close the delete modal
+    } catch (err) {
+      console.error("Error deleting task:", err);
+      setError("Failed to delete the task. Please try again.");
+    }
+  };
+
+  // Open the edit modal for a specific task
+  const openEditModal = (taskId) => {
+    setSelectedTaskId(taskId); // Set the selected task ID
+    setOnEditModal(true); // Show the edit modal
+  };
+
+  // Open the edit modal for a specific task
+  const openAddNewTaskModal = (taskId) => {
+    setSelectedTaskId(taskId); // Set the selected task ID
+    setOnAddNewTaskModal(true); // Show the edit modal
+  };
+
+  // Open the delete modal for a specific task
+  const handleDeleteModal = (taskId) => {
+    setSelectedTaskId(taskId); // Set the selected task ID
+    setOnDeleteModal(true); // Show the delete modal
+  };
+
+  // Function to close the edit modal
+  const onCloseEditModal = () => {
+    setOnEditModal(false);
+    setSelectedTaskId(null); // Reset the selected task when closing the modal
+  };
+
+  // Function to close the Add New Task modal
+  const onCloseAddNewTaskModal = () => {
+    setOnAddNewTaskModal(false);
+    setSelectedTaskId(null); // Reset the selected task when closing the modal
+  };
+
+  // Function to close the delete modal
+  const onCloseDeleteModal = () => {
+    setOnDeleteModal(false);
+    setSelectedTaskId(null); // Reset the selected task when closing the modal
+  };
+
+  //Ensure UI updates reflect without having to reload the entire page
+  const handleTaskUpdate = (updatedTask) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task._id === updatedTask._id ? updatedTask : task
+      )
+    );
+  };
 
   // Function to get the background color for task priority
   const getPriorityColor = (priority) => {
@@ -97,9 +158,8 @@ const BoardDetailsPage = () => {
             stroke-linecap="round"
             stroke-linejoin="round"
           >
-            {" "}
-            <circle cx="12" cy="12" r="10" />{" "}
-            <line x1="15" y1="9" x2="9" y2="15" />{" "}
+            <circle cx="12" cy="12" r="10" />
+            <line x1="15" y1="9" x2="9" y2="15" />
             <line x1="9" y1="9" x2="15" y2="15" />
           </svg>
         );
@@ -116,8 +176,7 @@ const BoardDetailsPage = () => {
             stroke-linecap="round"
             stroke-linejoin="round"
           >
-            {" "}
-            <path stroke="none" d="M0 0h24v24H0z" />{" "}
+            <path stroke="none" d="M0 0h24v24H0z" />
             <circle cx="12" cy="12" r="9" /> <path d="M9 12l2 2l4 -4" />
           </svg>
         );
@@ -132,57 +191,16 @@ const BoardDetailsPage = () => {
             stroke-linecap="round"
             stroke-linejoin="round"
           >
-            {" "}
-            <line x1="12" y1="2" x2="12" y2="6" />{" "}
-            <line x1="12" y1="18" x2="12" y2="22" />{" "}
-            <line x1="4.93" y1="4.93" x2="7.76" y2="7.76" />{" "}
-            <line x1="16.24" y1="16.24" x2="19.07" y2="19.07" />{" "}
-            <line x1="2" y1="12" x2="6" y2="12" />{" "}
-            <line x1="18" y1="12" x2="22" y2="12" />{" "}
-            <line x1="4.93" y1="19.07" x2="7.76" y2="16.24" />{" "}
+            <line x1="12" y1="2" x2="12" y2="6" />
+            <line x1="12" y1="18" x2="12" y2="22" />
+            <line x1="4.93" y1="4.93" x2="7.76" y2="7.76" />
+            <line x1="16.24" y1="16.24" x2="19.07" y2="19.07" />
+            <line x1="2" y1="12" x2="6" y2="12" />
+            <line x1="18" y1="12" x2="22" y2="12" />
+            <line x1="4.93" y1="19.07" x2="7.76" y2="16.24" />
             <line x1="16.24" y1="7.76" x2="19.07" y2="4.93" />
           </svg>
         );
-    }
-  };
-
-  // Open the edit modal for a specific task
-  const openEditModal = (taskId) => {
-    setSelectedTaskId(taskId); // Set the selected task ID
-    setOnEditModal(true); // Show the edit modal
-  };
-
-  // Open the edit modal for a specific task
-  const openAddNewTaskModal = (taskId) => {
-    setSelectedTaskId(taskId); // Set the selected task ID
-    setOnAddNewTaskModal(true); // Show the edit modal
-  };
-
-  // Open the delete modal for a specific task
-  const handleDeleteModal = (taskId) => {
-    setSelectedTaskId(taskId); // Set the selected task ID
-    setOnDeleteModal(true); // Show the delete modal
-  };
-
-  // Confirm and delete a task
-  const confirmDeleteTask = async () => {
-    try {
-      // Make DELETE request to the API
-      await axios.delete(`http://localhost:4000/api/tasks/${selectedTaskId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      // Remove the task from the UI
-      setTasks((prevTasks) =>
-        prevTasks.filter((task) => task._id !== selectedTaskId)
-      );
-      onCloseDeleteModal(); // Close the delete modal
-      window.location.reload();
-    } catch (err) {
-      console.error("Error deleting task:", err);
-      setError("Failed to delete the task. Please try again."); // Handle errors
     }
   };
 
@@ -298,6 +316,7 @@ const BoardDetailsPage = () => {
           boardId={boardId}
           onEditModal={onEditModal}
           onCloseEditModal={onCloseEditModal}
+          onUpdateTask={handleTaskUpdate}
         />
       )}
 

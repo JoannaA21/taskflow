@@ -123,7 +123,7 @@ const BoardList = ({ boards, setBoards }) => {
               {/* Colored Top Section */}
               <div
                 className="p-4 rounded-t-lg flex flex-col justify-center "
-                style={{ backgroundColor, height: "120px" }}
+                style={{ backgroundColor, height: "170px" }}
               >
                 <h3 className="text-base font-semibold text-gray-900 md:text-xl dark:text-white">
                   {board.name}

@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const EditTaskModal = ({ taskId, onEditModal, onCloseEditModal }) => {
+const EditTaskModal = ({
+  taskId,
+  onEditModal,
+  onCloseEditModal,
+  onUpdateTask,
+}) => {
   const loggedInUserInfo = JSON.parse(localStorage.getItem("loggedIn"));
   const token = loggedInUserInfo.token;
   const taskAPI = `http://localhost:4000/api/tasks/${taskId}`; //fetch by ID, and patch by Id
@@ -64,8 +69,8 @@ const EditTaskModal = ({ taskId, onEditModal, onCloseEditModal }) => {
       // Update both the original task and the editable task states
       setTask(updatedTask);
       setEditedTask(updatedTask);
-      // setEditedTask(response.data);
-      //console.log("Edited task successfully.", response.data);
+
+      onUpdateTask(updatedTask); //to update parent component
       onCloseEditModal();
     } catch (err) {
       console.error("Error updating task:", err);

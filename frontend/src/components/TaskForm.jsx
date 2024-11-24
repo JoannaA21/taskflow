@@ -113,7 +113,7 @@ const TaskForm = ({
             className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-primary-700 focus:border-primary-700 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
           >
             <option value="Todo">Todo</option>
-            <option value="InProgress">InProgress</option>
+            <option value="In Progress">In Progress</option>
             <option value="Done">Done</option>
           </select>
 

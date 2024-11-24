@@ -14,7 +14,7 @@ const Dashboard = () => {
   };
 
   // Open the edit modal for a specific task
-  const onOpenAddNewBoardModal = (taskId) => {
+  const onOpenAddNewBoardModal = () => {
     setOnAddNewBoardModal(true); // Show the edit modal
   };
 

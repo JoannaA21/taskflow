@@ -37,6 +37,7 @@ const BoardForm = ({ onOpenAddNewBoardModal, onCloseAddNewBoardModal }) => {
         },
       });
       //console.log(res);
+      window.location.reload();
       onCloseAddNewBoardModal();
     } catch (err) {
       err.response?.data?.message || "An error occurred creating a new task.";
