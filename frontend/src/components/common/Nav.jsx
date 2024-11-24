@@ -49,8 +49,8 @@ const Nav = () => {
               loop={true}
               className="h-14"
             />
-            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white text-white">
-              Task Management
+            <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white text-white">
+              TaskFlow
             </span>
           </Link>
           <div className="flex items-center space-x-6 rtl:space-x-reverse">
