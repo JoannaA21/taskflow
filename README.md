@@ -23,9 +23,9 @@
 - Node.js
 - MongoDB (local or cloud)
 - Set up your environment variables for the backend in a .env file. You may need the following:
-PORT= *Your choice*
-MONGO_URI=*Your MongoDB URI*
-JWT_SECRET=*Your Secret for JWT*
+      - PORT= *Your choice*
+      - MONGO_URI=*Your MongoDB URI*
+      - JWT_SECRET=*Your Secret for JWT*
 
 ## Getting Started
 
