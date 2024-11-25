@@ -1,5 +1,3 @@
-# task_management_mern
-
 ## Project Description
 
 TaskFlow is a task management application designed to organize and simplify project workflows. It enables users to create boards that serve as containers for tasks, allowing them to break down work into manageable steps. Each task is enriched with essential details such as name, description, status, priority, and due date, ensuring clear tracking and efficient project management.
