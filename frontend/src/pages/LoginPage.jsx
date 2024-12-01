@@ -5,7 +5,7 @@ import animationData from "../assets/lottie/Animation-taskManagement - 173188577
 
 const LoginPage = () => {
   return (
-    <div className="flex h-screen bg-primary-700">
+    <div className="flex h-screen max-w-[80rem] mx-auto bg-primary-700">
       {/* Left side: Login Form  */}
       <div className="w-1/2 flex justify-center items-center bg-white">
         <LoginForm />

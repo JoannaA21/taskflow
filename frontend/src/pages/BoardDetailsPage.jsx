@@ -217,15 +217,15 @@ const BoardDetailsPage = () => {
   };
 
   return (
-    <div>
+    <div className="">
       {/* Display board details */}
       {boardDetails ? (
-        <div className="pt-10 flex items-center justify-between mt-20">
-          <h1 className="text-4xl font-bold text-gray-900 mb-6 mx-auto ">
+        <div className=" max-w-[80rem] mx-auto pt-10 flex items-center justify-between mt-20 md:mb-10 lg:mb-20">
+          <h1 className="text-2xl md:text-4xl lg:text-6xl text-primary-700 font-bold ml-5">
             {boardDetails.name}
           </h1>
-          <Link to="/history">
-            <p className="cursor-pointer font-medium hover:underline hover:text-primary-700 text-gray-500 italic mr-3">
+          <Link to="/history" className="ml-auto mt-0 order-none mr-3">
+            <p className="cursor-pointer font-normal md:text-2xl lg:text-3xl hover:underline hover:text-primary-700 text-gray-500 italic">
               View History
             </p>
           </Link>
@@ -233,9 +233,11 @@ const BoardDetailsPage = () => {
           <button
             type="button"
             onClick={openAddNewTaskModal}
-            className="cursor-pointer font-medium rounded-lg mr-3 text-sm p-3 text-white bg-primary-500 hover:bg-purple-700"
+            className="cursor-pointer rounded-lg p-2 md:p-5 mr-3 md:mr-10  text-white bg-primary-500 hover:bg-purple-700"
           >
-            <span className="font-medium text-lg">+Add New Task </span>
+            <span className="font-normal text-sm sm:text-lg md:text-2xl lg:text-3xl">
+              +Add New Task{" "}
+            </span>
           </button>
         </div>
       ) : (
@@ -247,7 +249,7 @@ const BoardDetailsPage = () => {
 
       {/* Display tasks */}
       {tasks.length > 0 ? (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 m-5">
+        <ul className=" max-w-[80rem] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 m-5">
           {tasks.map((task) => (
             <li
               key={task._id}
@@ -261,30 +263,32 @@ const BoardDetailsPage = () => {
               }
               `}
             >
-              <div className="absolute top-2 right-2">
+              {/* <div className="absolute top-2 right-2"> */}
+              <div className="absolute top-2 right-2 flex items-center space-x-2">
                 {getStatusIcon(task.status)}
               </div>
 
               <div>
-                <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                <h2 className="mb-2 text-lg md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                   {task.title}
                 </h2>
               </div>
               {task.description && (
                 <p>
-                  <span className="italic font-bold">Description:</span>{" "}
+                  <span className="italic font-semibold">Description:</span>
                   {task.description}
                 </p>
               )}
               <p>
-                <span className="italic font-bold">Status:</span> {task.status}
+                <span className="italic font-semibold">Status:</span>{" "}
+                {task.status}
               </p>
               <p>
-                <span className="italic font-bold">Priority:</span>{" "}
+                <span className="italic font-semibold">Priority:</span>{" "}
                 {task.priority}
               </p>
               <p>
-                <span className="italic font-bold">Due Date:</span>{" "}
+                <span className="italic font-semibold">Due Date:</span>{" "}
                 {new Date(task.dueDate).toLocaleDateString()}
               </p>
 

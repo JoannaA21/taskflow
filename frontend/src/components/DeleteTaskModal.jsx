@@ -1,6 +1,6 @@
 const DeleteTaskModal = ({ onCloseDeleteModal, confirmDeleteTask }) => {
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50 max-w-[80rem] mx-auto">
       <div className="bg-white w-96 md:w-[28rem] p-8 rounded-lg shadow-lg text-center">
         <p className="mb-6 text-lg font-medium">
           Are you sure you want to delete this task?

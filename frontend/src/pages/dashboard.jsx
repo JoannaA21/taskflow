@@ -20,18 +20,22 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="pt-10 flex items-center justify-between mt-20">
-        <h1 className="text-3xl font-bold text-primary-700 ml-5">Hi, {user}</h1>
+      <div className="flex max-w-[80rem] mx-auto items-center justify-between mt-32">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary-700 ml-10 md:ml-14 lg:ml-16">
+          Hi, {user}
+        </h1>
         <button
           onClick={onOpenAddNewBoardModal}
           type="button"
-          className="cursor-pointer font-medium rounded-lg text-sm p-3 text-white bg-primary-500 hover:bg-purple-700"
+          className="cursor-pointer rounded-lg p-2 lg:p-5 mr-3 lg:mr-10  text-white bg-primary-500 hover:bg-purple-700"
         >
-          <span className="font-medium text-lg"> +Add New Board</span>
+          <span className="font-normal text-sm sm:text-lg md:text-xl lg:text-2xl">
+            +Add New Board
+          </span>
         </button>
       </div>
 
-      <div className="mt-20">
+      <div className="mt-5">
         <BoardCard />
       </div>
 

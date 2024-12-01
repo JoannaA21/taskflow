@@ -49,13 +49,13 @@ const Nav = () => {
               loop={true}
               className="h-14"
             />
-            <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white text-white">
+            <span className="self-center text-lg sm:text-3xl font-semibold whitespace-nowrap dark:text-white text-white">
               TaskFlow
             </span>
           </Link>
           <div className="flex items-center space-x-6 rtl:space-x-reverse">
             <p
-              className="text-primary-200 text-2xl font-bold cursor-pointer hover:text-white"
+              className="text-primary-200 text-lg sm:text-3xl font-bold cursor-pointer hover:text-white"
               onClick={logout}
             >
               Logout

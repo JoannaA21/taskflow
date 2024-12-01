@@ -13,6 +13,7 @@ const BoardCard = () => {
   // console.log("token", token);
   // console.log("userId", userId);
   const [boards, setBoards] = useState([]);
+  const [error, setError] = useState(null);
 
   //console.log("boards", boards);
   //console.log("id", boards[0]._id);
@@ -27,12 +28,22 @@ const BoardCard = () => {
         });
         setBoards(response.data); // Assuming the API response is an array of boards
       } catch (err) {
+        setError("Failed to fetch boards. Please try again later."); // Set error message
         console.error("Error fetching boards:", err);
       }
     };
 
     fetchBoards();
   }, []);
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center text-center">
+        <h1 className="text-2xl font-bold mb-3">Oops!</h1>
+        <p>{error}</p>
+      </div>
+    );
+  }
 
   return (
     <>

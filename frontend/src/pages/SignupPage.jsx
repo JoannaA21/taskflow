@@ -4,7 +4,7 @@ import animationData from "../assets/lottie/Animation-taskManagement - 173188577
 
 const SignupPage = () => {
   return (
-    <div className="flex h-screen bg-primary-700">
+    <div className="flex h-screen max-w-[80rem] mx-auto bg-primary-700">
       {/* Left side: Animation */}
       <div className="w-1/2 flex flex-col justify-center items-center bg-primary-700">
         <p className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl italic font-semibold ">

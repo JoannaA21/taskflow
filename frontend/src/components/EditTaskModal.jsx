@@ -81,7 +81,7 @@ const EditTaskModal = ({
   if (!onEditModal) return null;
 
   return (
-    <div className=" fixed inset-0 z-20 bg-gray-400 bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+    <div className=" fixed inset-0 z-20 bg-gray-400 bg-opacity-30 backdrop-blur-sm flex justify-center items-center max-w-[80rem] mx-auto">
       <form
         className="bg-white shadow-lg rounded-lg p-8 max-w-lg w-full space-y-6"
         onSubmit={editTask}

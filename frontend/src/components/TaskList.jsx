@@ -58,30 +58,39 @@ const TaskList = ({ boardId }) => {
 
   return (
     <div>
+      {/* Display Error Message */}
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          <p>{error}</p>
+        </div>
+      )}
+
       <ul className="space-y-2">
         {tasks.map((task) => (
           <li
             key={task._id}
-            className={`p-2 text-sm font-medium text-gray-800 rounded shadow ${getPriorityColor(
+            className={`p-2 text-sm md:text-base lg:text-2xl md:font-medium text-gray-800 rounded shadow ${getPriorityColor(
               task.priority
             )}`}
           >
             <p>
-              <span className="italic font-bold">Task name:</span> {task.title}
+              <span className="italic font-bold">Task name: </span>
+              {task.title}
             </p>
             <p>
-              <span className="italic font-bold">Description:</span>
+              <span className="italic font-bold">Description: </span>
               {task.description}
             </p>
             <p>
-              <span className="italic font-bold">Status:</span> {task.status}
+              <span className="italic font-bold">Status: </span>
+              {task.status}
             </p>
             <p>
-              <span className="italic font-bold">Priority:</span>
+              <span className="italic font-bold">Priority: </span>
               {task.priority}
             </p>
             <p>
-              <span className="italic font-bold">Due Date:</span>
+              <span className="italic font-bold">Due Date: </span>
               {new Date(task.dueDate).toLocaleDateString()}
             </p>
           </li>

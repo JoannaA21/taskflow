@@ -29,7 +29,7 @@ const HistoryPage = () => {
   };
 
   return (
-    <>
+    <div className="max-w-[80rem] mx-auto">
       {/* Back Button */}
       <div className="flex justify-end mb-4 mt-28 mr-5">
         <button
@@ -76,7 +76,7 @@ const HistoryPage = () => {
           </div>
         )}
       </ul>
-    </>
+    </div>
   );
 };
 

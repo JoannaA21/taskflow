@@ -93,11 +93,24 @@ const BoardList = ({ boards, setBoards }) => {
   };
 
   return (
-    <div className="relative w-full px-4 md:px-12">
+    <div className="relative max-w-[80rem] mx-auto w-full px-10 md:px-12 py-5 lg:px-16">
+      {/* Error Notification */}
+      {error && (
+        <div className="mb-4 p-4 text-red-800 bg-red-100 border border-red-300 rounded-md">
+          <p>{error}</p>
+          <button
+            onClick={() => setError("")}
+            className="text-primary-600 mt-2"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
+
       {/* Left Arrow */}
       {scrollIndex > 0 && (
         <button
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-gray-300 rounded-full shadow-lg"
+          className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-gray-300 rounded-full shadow-lg md:hidden"
           onClick={() => handleScroll("left")}
         >
           &lt;
@@ -107,7 +120,7 @@ const BoardList = ({ boards, setBoards }) => {
       {/* Board Container */}
       <div
         ref={containerRef}
-        className="flex overflow-x-scroll scroll-smooth no-scrollbar space-x-4"
+        className="flex overflow-x-scroll scroll-smooth no-scrollbar space-x-4 md:space-x-8 lg:space-x-12"
         style={{ scrollSnapType: "x mandatory" }}
       >
         {boards?.map((board, index) => {
@@ -117,7 +130,7 @@ const BoardList = ({ boards, setBoards }) => {
           return (
             <div
               key={board._id}
-              className="flex-shrink-0 mt-10 w-1/5 max-w-sm border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:scale-105 transition duration-200 "
+              className="flex-shrink-0 mt-4 w-3/5 sm:w-2/5 md:w-2/5 lg:w-[30rem] max-w-sm border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:scale-105 transition duration-200 "
               style={{ scrollSnapAlign: "center" }}
             >
               {/* Colored Top Section */}
@@ -125,15 +138,17 @@ const BoardList = ({ boards, setBoards }) => {
                 className="p-4 rounded-t-lg flex flex-col justify-center "
                 style={{ backgroundColor, height: "170px" }}
               >
-                <h3 className="text-base font-semibold text-gray-900 md:text-xl dark:text-white">
+                <h3 className="text-sm sm:text-base md:text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">
                   {board.name}
                 </h3>
-                <p className="mt-2 text-gray-700">{board.description}</p>
+                <p className="mt-2 text-sm sm:text-base md:text-lg lg:text-2xl text-gray-700">
+                  {board.description}
+                </p>
 
                 {/* SVG Icon positioned in the top-right corner */}
                 <div className="flex justify-end space-x-4 mt-2">
                   <svg
-                    className="w-6 h-6 text-gray-800 dark:text-white cursor-pointer "
+                    className="w-6 h-6 md:w-8 md:h-8 text-gray-800 dark:text-white cursor-pointer "
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -153,9 +168,12 @@ const BoardList = ({ boards, setBoards }) => {
                 </div>
               </div>
 
-              <Link to={`/board/${board._id}`} key={board._id}>
+              <Link
+                to={`/board/${board._id}`}
+                className="max-h-full overflow-hidden"
+              >
                 {/* White Task Section */}
-                <div className="bg-white min-w-[150px] p-4 rounded-b-lg">
+                <div className="bg-white min-w-[150px] p-4 rounded-lg max-h-[30rem] sm:max-h-[50rem] md:max-h-[75rem] lg:max-h-[125rem] xl:max-h-[110rem] overflow-y-auto">
                   <TaskList boardId={board._id} />
                 </div>
               </Link>
@@ -184,7 +202,7 @@ const BoardList = ({ boards, setBoards }) => {
       {/* Right Arrow */}
       {scrollIndex < Math.ceil(boards.length / 5) - 1 && (
         <button
-          className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-gray-300 rounded-full shadow-lg"
+          className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-gray-300 rounded-full shadow-lg md:hidden"
           onClick={() => handleScroll("right")}
         >
           &gt;

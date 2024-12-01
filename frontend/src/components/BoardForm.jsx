@@ -47,10 +47,10 @@ const BoardForm = ({ onOpenAddNewBoardModal, onCloseAddNewBoardModal }) => {
   if (!onOpenAddNewBoardModal) return null;
 
   return (
-    <div className=" fixed inset-0 bg-gray-400 bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+    <div className="fixed inset-0 bg-gray-400 bg-opacity-30 backdrop-blur-sm flex justify-center items-center max-w-[80rem] mx-auto">
       <form
         onSubmit={addBoard}
-        className="bg-white shadow-lg rounded-lg p-8 max-w-lg w-full space-y-6"
+        className="bg-white shadow-lg rounded-lg p-8 max-w-[20rem] sm:max-w-xl lg:max-w-2xl w-full space-y-6"
       >
         {error && (
           <p className="text-red-700 text-md bg-red-200 p-2 w-fit">{error}</p>
