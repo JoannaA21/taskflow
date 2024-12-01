@@ -1,14 +1,12 @@
-# task_management_mern
-
 ## Project Description
 
-TaskFlow is a task management application designed to organize and simplify project workflows. It enables users to create boards that serve as containers for tasks, allowing them to break down work into manageable steps. Each task is enriched with essential details such as name, description, status, priority, and due date, ensuring clear tracking and efficient project management.
+**TaskFlow** is a task management application designed to organize and simplify project workflows. It enables users to create boards that serve as containers for tasks, allowing them to break down work into manageable steps. Each task is enriched with essential details such as name, description, status, priority, and due date, ensuring clear tracking and efficient project management.
 
 ## Features
 
 - **User Authentication**: Users can sign up, log in, and log out.
 - **Board Management**: Users can create, delete, and view boards.
-- **Task Management**: Users can add tasks to boards, update their details (status, priority, due date), delete tasks, and access deleted tasks from the history.
+- **Task Management**: Users can add tasks to boards, update their details (name, status, description, priority, due date), delete tasks, and access deleted tasks from the history.
 - **Task History**: Deleted tasks are stored in the history for easy access later.
 - **Task Details**: Each task includes the name, description, status, priority, and due date.
 
@@ -24,11 +22,10 @@ TaskFlow is a task management application designed to organize and simplify proj
 
 - Node.js
 - MongoDB (local or cloud)
-
-Set up your environment variables for the backend in a .env file. You may need the following:
-PORT=<Your choice>
-MONGO_URI=<Your MongoDB URI>
-JWT_SECRET=<Your Secret for JWT>
+- Set up your environment variables for the backend in a .env file. You may need the following:
+      - PORT= *Your choice*
+      - MONGO_URI=*Your MongoDB URI*
+      - JWT_SECRET=*Your Secret for JWT*
 
 ## Getting Started
 
