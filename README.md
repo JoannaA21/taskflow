@@ -22,10 +22,7 @@
 
 - Node.js
 - MongoDB (local or cloud)
-- Set up your environment variables for the backend in a .env file. You may need the following:
-      - PORT= *Your choice*
-      - MONGO_URI=*Your MongoDB URI*
-      - JWT_SECRET=*Your Secret for JWT*
+- Set up your environment variables for the backend in a .env file. You may need the following: 1. PORT= _Your choice_ <4000> 2. MONGO*URI=\_Your MongoDB URI* <mongodb+srv://joannaapellido:jojo@cluster0.7yu8f.mongodb.net/TaskManagement?retryWrites=true&w=majority&appName=Cluster0&tls=true> 3. JWT*SECRET=\_Your Secret for JWT* <b7d450ae073d91d93a9d788eed7c8cff27fa6c36cdd4909a277b91adaf570065b28d0ba911a99047f37652549966820209fab4a8b1e7944610ab9d04118a3d4a>
 
 ## Getting Started
 
