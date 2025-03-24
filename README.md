@@ -23,14 +23,7 @@
 - Node.js
 - MongoDB (local or cloud)
 - Set up your environment variables for the backend in a .env file. You'll need the following: PORT, MONGO_URI,ACCESS_SECRET_KEY (JWT)
-<details>
-      <summary>...</summary>
 
-1. PORT=4000
-2. MONGO_URI=mongodb+srv://joannaapellido:jojo@cluster0.7yu8f.mongodb.net/TaskManagement?retryWrites=true&w=majority&appName=Cluster0&tls=true
-3. ACCESS_SECRET_KEY=b7d450ae073d91d93a9d788eed7c8cff27fa6c36cdd4909a277b91adaf570065b28d0ba911a99047f37652549966820209fab4a8b1e7944610ab9d04118a3d4a
-
-</details>
 
 ## Getting Started
 
