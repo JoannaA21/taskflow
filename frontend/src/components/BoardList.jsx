@@ -7,17 +7,16 @@ import DeleteBoardModal from "./DeleteBoardModal";
 const BoardList = ({ boards, setBoards }) => {
   const loggedInUserInfo = JSON.parse(localStorage.getItem("loggedIn"));
   const token = loggedInUserInfo.token;
-  const containerRef = useRef(null); // Reference for the container
-  const [scrollIndex, setScrollIndex] = useState(0); // Current scroll index
-  const [onDeleteModal, setOnDeleteModal] = useState(false); // Toggle for delete modal visibility
+  const containerRef = useRef(null);
+  const [scrollIndex, setScrollIndex] = useState(0);
+  const [onDeleteModal, setOnDeleteModal] = useState(false);
   const [selectedBoardId, setSelectedBoardId] = useState(null);
   const [error, setError] = useState("");
-  const [taskCount, setTaskCount] = useState(false); //number of tasks
-  const [isLoadingTasks, setIsLoadingTasks] = useState(false); // New loading state
+  const [taskCount, setTaskCount] = useState(false);
+  const [isLoadingTasks, setIsLoadingTasks] = useState(false);
 
   const fetchTasks = async (boardId) => {
-    setIsLoadingTasks(true); // Start loading
-
+    setIsLoadingTasks(true);
     try {
       const response = await axios.get(
         `http://localhost:4000/api/boards/${boardId}/tasks`,
@@ -25,7 +24,7 @@ const BoardList = ({ boards, setBoards }) => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       if (response.data.length !== 0) {
@@ -35,13 +34,13 @@ const BoardList = ({ boards, setBoards }) => {
       console.error("Error fetching tasks:", err);
       setError("Failed to load tasks. Please try again.");
     } finally {
-      setIsLoadingTasks(false); // Stop loading
+      setIsLoadingTasks(false);
     }
   };
 
   const handleScroll = (direction) => {
     const container = containerRef.current;
-    const scrollAmount = container.offsetWidth; // Width of the visible container
+    const scrollAmount = container.offsetWidth;
     if (direction === "left" && scrollIndex > 0) {
       setScrollIndex(scrollIndex - 1);
       container.scrollBy({ left: -scrollAmount, behavior: "smooth" });
@@ -62,30 +61,27 @@ const BoardList = ({ boards, setBoards }) => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
-      //Remove the board from the UI
       setBoards((prevBoards) =>
-        prevBoards.filter((board) => board._id !== selectedBoardId)
+        prevBoards.filter((board) => board._id !== selectedBoardId),
       );
 
       setSelectedBoardId(null);
-      onCloseDeleteModal(); // Close the delete modal
-    } catch {
+      onCloseDeleteModal();
+    } catch (err) {
       console.error("Error deleting board:", err);
-      setError("Failed to delete the board. Please try again."); // Handle errors
+      setError("Failed to delete the board. Please try again.");
     }
   };
 
-  //Function to open the delete modal
   const onOpenDeleteModal = (boardId) => {
     setOnDeleteModal(true);
     setSelectedBoardId(boardId);
     fetchTasks(boardId);
   };
 
-  // Function to close the delete modal
   const onCloseDeleteModal = () => {
     setOnDeleteModal(false);
     setSelectedBoardId(null);
@@ -97,10 +93,10 @@ const BoardList = ({ boards, setBoards }) => {
       {/* Error Notification */}
       {error && (
         <div className="mb-4 p-4 text-red-800 bg-red-100 border border-red-300 rounded-md">
-          <p>{error}</p>
+          <p className="text-sm sm:text-base">{error}</p>
           <button
             onClick={() => setError("")}
-            className="text-primary-600 mt-2"
+            className="text-primary-600 mt-2 text-sm hover:underline"
           >
             Dismiss
           </button>
@@ -110,7 +106,7 @@ const BoardList = ({ boards, setBoards }) => {
       {/* Left Arrow */}
       {scrollIndex > 0 && (
         <button
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-gray-300 rounded-full shadow-lg md:hidden"
+          className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-gray-300 rounded-full shadow-lg hover:bg-gray-400"
           onClick={() => handleScroll("left")}
         >
           &lt;
@@ -120,35 +116,30 @@ const BoardList = ({ boards, setBoards }) => {
       {/* Board Container */}
       <div
         ref={containerRef}
-        className="flex overflow-x-scroll scroll-smooth no-scrollbar space-x-4 md:space-x-8 lg:space-x-12"
-        style={{ scrollSnapType: "x mandatory" }}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
       >
-        {boards?.map((board, index) => {
-          const hue = (index * 137) % 360; // Dynamic color
-          const backgroundColor = `hsl(${hue}, 70%, 80%)`;
-
+        {boards?.map((board) => {
           return (
             <div
               key={board._id}
-              className="flex-shrink-0 mt-4 w-3/5 sm:w-2/5 md:w-2/5 lg:w-[30rem] max-w-sm border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:scale-105 transition duration-200 "
-              style={{ scrollSnapAlign: "center" }}
+              className="mt-4 w-full border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 hover:scale-105 transition duration-200"
             >
               {/* Colored Top Section */}
               <div
-                className="p-4 rounded-t-lg flex flex-col justify-center "
-                style={{ backgroundColor, height: "170px" }}
+                className="p-4 rounded-t-lg flex flex-col justify-center bg-primary-100"
+                style={{ height: "170px" }}
               >
-                <h3 className="text-sm sm:text-base md:text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">
+                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white leading-tight">
                   {board.name}
                 </h3>
-                <p className="mt-2 text-sm sm:text-base md:text-lg lg:text-2xl text-gray-700">
+                <p className="mt-2 text-base sm:text-lg md:text-xl lg:text-2xl text-gray-700 leading-relaxed">
                   {board.description}
                 </p>
 
                 {/* SVG Icon positioned in the top-right corner */}
                 <div className="flex justify-end space-x-4 mt-2">
                   <svg
-                    className="w-6 h-6 md:w-8 md:h-8 text-gray-800 dark:text-white cursor-pointer "
+                    className="w-6 h-6 sm:w-8 sm:h-8 text-gray-800 dark:text-white cursor-pointer hover:opacity-75 transition-opacity"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -170,10 +161,10 @@ const BoardList = ({ boards, setBoards }) => {
 
               <Link
                 to={`/board/${board._id}`}
-                className="max-h-full overflow-hidden"
+                className="block max-h-full overflow-hidden hover:no-underline focus:outline-none focus:ring-2 focus:ring-primary-500"
               >
                 {/* White Task Section */}
-                <div className="bg-white min-w-[150px] p-4 rounded-lg max-h-[30rem] sm:max-h-[50rem] md:max-h-[75rem] lg:max-h-[125rem] xl:max-h-[110rem] overflow-y-auto">
+                <div className="bg-white p-4 rounded-b-lg max-h-[30rem] sm:max-h-[40rem] md:max-h-[50rem] lg:max-h-[60rem] overflow-y-auto">
                   <TaskList boardId={board._id} />
                 </div>
               </Link>
@@ -193,8 +184,10 @@ const BoardList = ({ boards, setBoards }) => {
 
       {onDeleteModal && isLoadingTasks && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white w-96 md:w-[28rem] p-8 rounded-lg shadow-lg text-center">
-            <p className="mb-6 text-lg font-medium">Checking tasks...</p>
+          <div className="bg-white w-80 sm:w-96 md:w-[28rem] p-8 rounded-lg shadow-xl text-center">
+            <p className="mb-6 text-lg font-medium text-gray-900">
+              Checking tasks...
+            </p>
           </div>
         </div>
       )}
@@ -202,7 +195,7 @@ const BoardList = ({ boards, setBoards }) => {
       {/* Right Arrow */}
       {scrollIndex < Math.ceil(boards.length / 5) - 1 && (
         <button
-          className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-gray-300 rounded-full shadow-lg md:hidden"
+          className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-gray-300 rounded-full shadow-lg md:hidden hover:bg-gray-400"
           onClick={() => handleScroll("right")}
         >
           &gt;

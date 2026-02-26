@@ -12,13 +12,15 @@ const TaskForm = ({
   const token = loggedInUserInfo.token;
   const { boardId } = useParams();
   const createTaskInBoardAPI = `http://localhost:4000/api/boards/${boardId}/tasks`;
+  // Get today's date in YYYY-MM-DD format
+  const today = new Date().toISOString().split("T")[0];
 
   const [newTask, setNewTask] = useState({
     title: "",
     description: "",
     status: "Todo",
     priority: "Medium",
-    dueDate: null,
+    dueDate: today,
   });
 
   const [error, setError] = useState("");
@@ -138,6 +140,7 @@ const TaskForm = ({
             <input
               type="date"
               name="dueDate"
+              min={today}
               value={newTask.dueDate}
               onChange={handleInputChange}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

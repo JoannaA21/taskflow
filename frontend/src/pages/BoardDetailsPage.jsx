@@ -28,24 +28,31 @@ const BoardDetailsPage = () => {
   const [onAddNewTaskModal, setOnAddNewTaskModal] = useState(false); //Toggle for add new task modal visibility
   const [selectedTaskId, setSelectedTaskId] = useState(null); // Store the ID of the selected task
 
+  // Status columns data
+  const statusColumns = [
+    { id: "todo", label: "To Do", color: "bg-red-50 border-red-200" },
+    {
+      id: "inprogress",
+      label: "In Progress",
+      color: "bg-blue-50 border-blue-200",
+    },
+    { id: "done", label: "Done", color: "bg-green-50 border-green-200" },
+  ];
+
   // Fetch board details and tasks when the component loads
   useEffect(() => {
     const fetchBoardAndTasks = async () => {
       try {
         // Fetch board details
-        const boardResponse = await axios.get(boardAPI, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
         // Fetch tasks for the board
-        const tasksResponse = await axios.get(tasksAPI, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
+        const [boardResponse, tasksResponse] = await Promise.all([
+          axios.get(boardAPI, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get(tasksAPI, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
         setBoardDetails(boardResponse.data);
         setTasks(tasksResponse.data);
       } catch (err) {
@@ -67,16 +74,16 @@ const BoardDetailsPage = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       // Store deleted task in history with the user's info
       const deletedTask = response.data;
 
-      // Attach the logged-in user’s information locally
+      // Attach the logged-in user's information locally
       const taskWithUserInfo = {
         ...deletedTask,
-        deletedBy: loggedInUserInfo.details.username, // Add the logged-in user’s username
+        deletedBy: loggedInUserInfo.details.username, // Add the logged-in user's username
         deletedAt: new Date().toISOString(), // Optionally, store when the task was deleted
       };
 
@@ -88,7 +95,7 @@ const BoardDetailsPage = () => {
 
       // Remove the task from the UI
       setTasks((prevTasks) =>
-        prevTasks.filter((task) => task._id !== selectedTaskId)
+        prevTasks.filter((task) => task._id !== selectedTaskId),
       );
 
       onCloseDeleteModal(); // Close the delete modal
@@ -105,8 +112,7 @@ const BoardDetailsPage = () => {
   };
 
   // Open the edit modal for a specific task
-  const openAddNewTaskModal = (taskId) => {
-    setSelectedTaskId(taskId); // Set the selected task ID
+  const openAddNewTaskModal = () => {
     setOnAddNewTaskModal(true); // Show the edit modal
   };
 
@@ -138,244 +144,246 @@ const BoardDetailsPage = () => {
   const handleTaskUpdate = (updatedTask) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
-        task._id === updatedTask._id ? updatedTask : task
-      )
+        task._id === updatedTask._id ? updatedTask : task,
+      ),
     );
   };
 
-  // Function to get the background color for task priority
-  const getPriorityColor = (priority) => {
-    switch (priority.toLowerCase()) {
+  const getPriorityIcon = (priority) => {
+    switch (priority?.toLowerCase()) {
       case "low":
-        return "bg-blue-200"; // Blue for low priority
+        return "📌";
       case "medium":
-        return "bg-yellow-200"; // Yellow for medium priority
+        return "⚡";
       case "high":
-        return "bg-red-200"; // Red for high priority
+        return "🔥";
       default:
-        return "bg-gray-100"; // Default gray for unknown priorities
+        return "📋";
     }
   };
 
-  const getStatusIcon = (status) => {
-    switch (status.toLowerCase()) {
-      case "todo":
-        return (
-          <svg
-            className="h-8 w-8 text-red-500"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <line x1="15" y1="9" x2="9" y2="15" />
-            <line x1="9" y1="9" x2="15" y2="15" />
-          </svg>
-        );
-      case "done":
-        return (
-          <svg
-            className="h-8 w-8 text-green-500"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            stroke-width="2"
-            stroke="currentColor"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" />
-            <circle cx="12" cy="12" r="9" /> <path d="M9 12l2 2l4 -4" />
-          </svg>
-        );
-      default:
-        return (
-          <svg
-            className="h-8 w-8 text-blue-500"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <line x1="12" y1="2" x2="12" y2="6" />
-            <line x1="12" y1="18" x2="12" y2="22" />
-            <line x1="4.93" y1="4.93" x2="7.76" y2="7.76" />
-            <line x1="16.24" y1="16.24" x2="19.07" y2="19.07" />
-            <line x1="2" y1="12" x2="6" y2="12" />
-            <line x1="18" y1="12" x2="22" y2="12" />
-            <line x1="4.93" y1="19.07" x2="7.76" y2="16.24" />
-            <line x1="16.24" y1="7.76" x2="19.07" y2="4.93" />
-          </svg>
-        );
-    }
+  const formatDate = (dueDate) => {
+    const date = new Date(dueDate);
+    const now = new Date();
+    const diffTime = date - now;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays <= 0) return "Overdue";
+    if (diffDays === 1) return "Tomorrow";
+    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   };
+
+  const getTasksByStatus = (status) =>
+    tasks.filter((task) => task.status?.toLowerCase() === status);
 
   return (
-    <div className="">
-      {/* Display board details */}
-      {boardDetails ? (
-        <div className=" max-w-[80rem] mx-auto pt-10 flex items-center justify-between mt-20 md:mb-10 lg:mb-20">
-          <h1 className="text-2xl md:text-4xl lg:text-6xl text-primary-700 font-bold ml-5">
-            {boardDetails.name}
-          </h1>
-          <Link to="/history" className="ml-auto mt-0 order-none mr-3">
-            <p className="cursor-pointer font-normal md:text-2xl lg:text-3xl hover:underline hover:text-primary-700 text-gray-500 italic">
-              View History
-            </p>
-          </Link>
-
-          <button
-            type="button"
-            onClick={openAddNewTaskModal}
-            className="cursor-pointer rounded-lg p-2 md:p-5 mr-3 md:mr-10  text-white bg-primary-500 hover:bg-purple-700"
-          >
-            <span className="font-normal text-sm sm:text-lg md:text-2xl lg:text-3xl">
-              +Add New Task{" "}
-            </span>
-          </button>
-        </div>
-      ) : (
-        <p>Loading board details...</p>
-      )}
-
-      {/* Display error messages */}
-      {error && <p>{error}</p>}
-
-      {/* Display tasks */}
-      {tasks.length > 0 ? (
-        <ul className=" max-w-[80rem] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 m-5">
-          {tasks.map((task) => (
-            <li
-              key={task._id}
-              className={`relative p-6 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:scale-105 transition duration-200 ${getPriorityColor(
-                task.priority
-              )} ${getStatusIcon(task.status)}
-              ${
-                task.status.toLowerCase() === "done"
-                  ? "line-through opacity-50"
-                  : ""
-              }
-              `}
-            >
-              {/* <div className="absolute top-2 right-2"> */}
-              <div className="absolute top-2 right-2 flex items-center space-x-2">
-                {getStatusIcon(task.status)}
-              </div>
-
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 pt-28 lg:pt-32">
+      {" "}
+      {/* Added pt-28 lg:pt-32 */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Display board details */}
+        {boardDetails ? (
+          <div className="mb-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 pt-4">
+            <div className="flex items-center space-x-4">
               <div>
-                <h2 className="mb-2 text-lg md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  {task.title}
-                </h2>
-              </div>
-              {task.description && (
-                <p>
-                  <span className="italic font-semibold">Description:</span>
-                  {task.description}
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black bg-gradient-to-r from-gray-900 via-gray-800 to-slate-800 bg-clip-text text-transparent drop-shadow-2xl leading-tight">
+                  {boardDetails.name}
+                </h1>
+                <p className="text-lg md:text-xl text-gray-600 mt-2 max-w-2xl leading-relaxed">
+                  {boardDetails.description}
                 </p>
-              )}
-              <p>
-                <span className="italic font-semibold">Status:</span>{" "}
-                {task.status}
-              </p>
-              <p>
-                <span className="italic font-semibold">Priority:</span>{" "}
-                {task.priority}
-              </p>
-              <p>
-                <span className="italic font-semibold">Due Date:</span>{" "}
-                {new Date(task.dueDate).toLocaleDateString()}
-              </p>
-
-              <div className="flex justify-end space-x-4 mt-2">
-                {/* Edit task icon */}
-                <svg
-                  className="w-6 h-6 dark:text-white cursor-pointer"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  onClick={() => openEditModal(task._id)}
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"
-                  />
-                </svg>
-
-                {/* Delete task icon */}
-                <svg
-                  className="w-6 h-6 text-gray-800 dark:text-white cursor-pointer"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  onClick={() => handleDeleteModal(task._id)}
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
-                  />
-                </svg>
               </div>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <div className="flex flex-col items-center justify-center mt-3 text-center">
-          <img
-            src={empty_boardDetail}
-            alt="task illustration"
-            className="w-1/2 max-w-sm mb-3"
+            </div>
+
+            <div className="flex items-center space-x-4 flex-shrink-0">
+              <Link
+                to="/history"
+                className="px-6 py-3 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl text-sm md:text-base font-semibold text-gray-800 hover:bg-white hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 shadow-lg"
+              >
+                📜 History
+              </Link>
+              <button
+                type="button"
+                onClick={openAddNewTaskModal}
+                className="px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-bold text-base md:text-lg rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 border border-white/20 backdrop-blur-sm"
+              >
+                + Add New Task
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="pt-32 flex items-center justify-center">
+            <p className="text-xl text-gray-600 animate-pulse">
+              Loading board details...
+            </p>
+          </div>
+        )}
+
+        {/* Display error messages */}
+        {error && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+            <p className="text-sm text-red-800">{error}</p>
+          </div>
+        )}
+
+        {/* Display tasks */}
+        {tasks.length > 0 ? (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+            {statusColumns.map((column) => {
+              const columnTasks = getTasksByStatus(column.id);
+              return (
+                <div
+                  key={column.id}
+                  className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6"
+                >
+                  <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center space-x-3">
+                    <span
+                      className={`w-3 h-3 rounded-full ${column.id === "todo" ? "bg-red-500" : column.id === "inprogress" ? "bg-blue-500" : "bg-green-500"}`}
+                    />
+                    <span>{column.label}</span>
+                    <span className="text-sm bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">
+                      {columnTasks.length}
+                    </span>
+                  </h3>
+
+                  <div className="space-y-4 max-h-[70vh] overflow-y-auto">
+                    {columnTasks.map((task) => (
+                      <div
+                        key={task._id}
+                        className={`group p-5 rounded-xl border shadow-sm hover:shadow-lg transition-all duration-200 hover:-translate-y-1 hover:bg-white ${column.color} ${
+                          task.status?.toLowerCase() === "done"
+                            ? "line-through opacity-60"
+                            : ""
+                        }`}
+                      >
+                        <div className="flex items-start justify-between mb-3">
+                          {/* Priority Icon on the Left */}
+                          <span className="text-2xl">
+                            {getPriorityIcon(task.priority)}
+                          </span>
+
+                          {/* Action Icons Grouped on the Right */}
+                          <div className="flex items-center space-x-1">
+                            <button
+                              onClick={() => openEditModal(task._id)}
+                              className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-100/50 rounded-lg transition-all"
+                              title="Edit Task"
+                            >
+                              <svg
+                                className="w-5 h-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"
+                                />
+                              </svg>
+                            </button>
+
+                            <button
+                              onClick={() => handleDeleteModal(task._id)}
+                              className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-100/50 rounded-lg transition-all"
+                              title="Delete Task"
+                            >
+                              <svg
+                                className="w-5 h-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+
+                        <h2 className="my-2 text-lg md:text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+                          {task.title}
+                        </h2>
+                        {task.description && (
+                          <p className="text-sm text-gray-600 mb-4">
+                            <span className="italic font-semibold">
+                              Description:
+                            </span>
+                            {task.description}
+                          </p>
+                        )}
+                        <p className="text-sm">
+                          <span className="italic font-semibold">Status:</span>{" "}
+                          {task.status}
+                        </p>
+                        <p className="text-sm">
+                          <span className="italic font-semibold">
+                            Priority:
+                          </span>{" "}
+                          {task.priority}
+                        </p>
+                        <p className="text-sm">
+                          <span className="italic font-semibold">
+                            Due Date:
+                          </span>{" "}
+                          {formatDate(task.dueDate)}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center mt-3 text-center py-20">
+            <img
+              src={empty_boardDetail}
+              alt="task illustration"
+              className="w-1/2 max-w-sm mb-3 mx-auto opacity-60"
+            />
+            <p className="text-xl font-medium text-gray-700 mb-2">
+              You don't have any tasks yet.
+            </p>
+            <p className="text-gray-500 mb-8">
+              Click on Add New Task to get started.
+            </p>
+          </div>
+        )}
+
+        {/* Conditionally render the EditTaskModal */}
+        {onEditModal && selectedTaskId && (
+          <EditTaskModal
+            onEditModal={onEditModal}
+            onCloseEditModal={onCloseEditModal}
+            taskId={selectedTaskId}
+            onUpdateTask={handleTaskUpdate}
           />
-          <p>Click on Add New Task to get started.</p>
+        )}
 
-          <p>You don't have any tasks yet.</p>
-        </div>
-      )}
+        {/* Conditionally render the Delete Modal */}
+        {onDeleteModal && (
+          <DeleteTaskModal
+            onCloseDeleteModal={onCloseDeleteModal}
+            confirmDeleteTask={confirmDeleteTask}
+          />
+        )}
 
-      {/* Conditionally render the EditTaskModal */}
-      {onEditModal && selectedTaskId && (
-        <EditTaskModal
-          onEditModal={onEditModal}
-          onCloseEditModal={onCloseEditModal}
-          taskId={selectedTaskId}
-          onUpdateTask={handleTaskUpdate}
-        />
-      )}
-
-      {/* Conditionally render the Delete Modal */}
-      {onDeleteModal && (
-        <DeleteTaskModal
-          onCloseDeleteModal={onCloseDeleteModal}
-          confirmDeleteTask={confirmDeleteTask}
-        />
-      )}
-
-      {/* Conditionally render the Add New Task Modal */}
-      {onAddNewTaskModal && (
-        <TaskForm
-          onOpenAddNewTaskModal={onAddNewTaskModal}
-          onCloseAddNewTaskModal={onCloseAddNewTaskModal}
-          tasks={tasks}
-          setTasks={setTasks}
-        />
-      )}
+        {/* Conditionally render the Add New Task Modal */}
+        {onAddNewTaskModal && (
+          <TaskForm
+            onOpenAddNewTaskModal={onAddNewTaskModal}
+            onCloseAddNewTaskModal={onCloseAddNewTaskModal}
+            tasks={tasks}
+            setTasks={setTasks}
+          />
+        )}
+      </div>
     </div>
   );
 };

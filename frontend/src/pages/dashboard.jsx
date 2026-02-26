@@ -21,17 +21,15 @@ const Dashboard = () => {
   return (
     <>
       <div className="flex max-w-[80rem] mx-auto items-center justify-between mt-32">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary-700 ml-10 md:ml-14 lg:ml-16">
+        <h1 className="bg-gradient-to-r from-primary-700 via-primary-600 to-indigo-700 bg-clip-text text-transparent text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black drop-shadow-2xl ml-10 md:ml-14 lg:ml-16 tracking-tight">
           Hi, {user}
         </h1>
         <button
           onClick={onOpenAddNewBoardModal}
           type="button"
-          className="cursor-pointer rounded-lg p-2 lg:p-5 mr-3 lg:mr-10  text-white bg-primary-500 hover:bg-purple-700"
+          className="rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 p-3 lg:p-5 mr-3 lg:mr-10 text-white font-semibold text-sm sm:text-lg md:text-xl lg:text-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 hover:from-primary-600 hover:to-primary-700"
         >
-          <span className="font-normal text-sm sm:text-lg md:text-xl lg:text-2xl">
-            +Add New Board
-          </span>
+          +Add New Board
         </button>
       </div>
 
