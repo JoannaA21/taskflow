@@ -67,8 +67,7 @@ const logout = (req, res) => {
   try {
     // Clear the token from the client-side (e.g., local storage)
     res.clearCookie("token"); // Clear the token cookie
-
-    res.json({ message: "Logout successful" });
+    res.status(200).json({ message: "Logout successful" });
   } catch (error) {
     res.status(500).json({
       error: "An error occurred during logout",
