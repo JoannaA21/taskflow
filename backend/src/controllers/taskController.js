@@ -69,7 +69,7 @@ const updateTask = async (req, res) => {
         _id: req.params.taskId,
       },
       req.body,
-      { new: true } //ensures the method returns the updated document after applying the changes specified in req.body
+      { new: true }, //ensures the method returns the updated document after applying the changes specified in req.body
     );
 
     if (!task) {
