@@ -22,13 +22,13 @@ const getUserById = async (req, res) => {
   try {
     //checks Id if it's a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found." });
     }
 
     const user = await User.findById(id);
 
     if (!user) {
-      return res.status(400).json({ message: "User not found." });
+      return res.status(404).json({ message: "User not found." });
     }
 
     res.status(200).json(user);
@@ -76,13 +76,13 @@ const deleteUser = async (req, res) => {
   try {
     //checks Id if it's a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found." });
     }
 
     const user = await User.findOneAndDelete({ _id: id });
 
     if (!user) {
-      return res.status(400).json({ message: "User not found." });
+      return res.status(404).json({ message: "User not found." });
     }
 
     res.status(200).json(user);

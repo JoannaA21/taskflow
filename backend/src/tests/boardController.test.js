@@ -28,7 +28,7 @@ describe("Board Controller", () => {
     Board.find.mockReset();
   });
 
-  describe("getAllBoards", () => {
+  describe("Get all boards", () => {
     // Get all boards for the logged-in user
     it("should return 404 if no boards are found", async () => {
       Board.find.mockResolvedValue([]); //mock the find function to return an empty array, simulating no boards found. Fake database
@@ -74,7 +74,7 @@ describe("Board Controller", () => {
     });
   });
 
-  describe("createBoard", () => {
+  describe("Create board", () => {
     //Create a new project/board
     it("should return 201 and the new board if board is created successfully", async () => {
       const mockBoard = {
@@ -116,7 +116,7 @@ describe("Board Controller", () => {
     });
   });
 
-  describe("getBoardById", () => {
+  describe("Get board by ID", () => {
     //Get a specific project/board by ID
     it("should return 404 if board is not found", async () => {
       Board.findOne.mockResolvedValue(null); //mock the findOne function to return null, simulating board not found. Fake database
@@ -156,7 +156,7 @@ describe("Board Controller", () => {
     });
   });
 
-  describe("updateBoard", () => {
+  describe("Update board", () => {
     //Update a project/board
     it("should return 404 if board to update is not found", async () => {
       Board.findOneAndUpdate.mockResolvedValue(null);
@@ -210,7 +210,7 @@ describe("Board Controller", () => {
     });
   });
 
-  describe("deleteBoard", () => {
+  describe("Delete board", () => {
     //Delete a project/board
     it("should return 404 if board to delete is not found", async () => {
       Board.findOneAndDelete.mockResolvedValue(null);
