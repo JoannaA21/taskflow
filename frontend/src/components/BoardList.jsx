@@ -124,45 +124,49 @@ const BoardList = ({ boards, setBoards }) => {
               key={board._id}
               className="mt-4 w-full border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 hover:scale-105 transition duration-200"
             >
-              {/* Colored Top Section */}
-              <div
-                className="p-4 rounded-t-lg flex flex-col justify-center bg-primary-100"
-                style={{ height: "170px" }}
-              >
-                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white leading-tight">
-                  {board.name}
-                </h3>
-                <p className="mt-2 text-base sm:text-lg md:text-xl lg:text-2xl text-gray-700 leading-relaxed">
-                  {board.description}
-                </p>
-
-                {/* SVG Icon positioned in the top-right corner */}
-                <div className="flex justify-end space-x-4 mt-2">
-                  <svg
-                    className="w-6 h-6 sm:w-8 sm:h-8 text-gray-800 dark:text-white cursor-pointer hover:opacity-75 transition-opacity"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    onClick={() => onOpenDeleteModal(board._id)}
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
-                    />
-                  </svg>
-                </div>
-              </div>
-
               <Link
                 to={`/board/${board._id}`}
                 className="block max-h-full overflow-hidden hover:no-underline focus:outline-none focus:ring-2 focus:ring-primary-500"
               >
+                {/* Colored Top Section */}
+                <div
+                  className="p-4 rounded-t-lg flex flex-col justify-center bg-primary-100"
+                  style={{ height: "170px" }}
+                >
+                  <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white leading-tight">
+                    {board.name}
+                  </h3>
+                  <p className="mt-2 text-base sm:text-lg md:text-xl lg:text-2xl text-gray-700 leading-relaxed">
+                    {board.description}
+                  </p>
+
+                  {/* SVG Icon positioned in the top-right corner */}
+                  <div className="flex justify-end space-x-4 mt-2">
+                    <svg
+                      className="w-6 h-6 sm:w-8 sm:h-8 text-gray-800 dark:text-white cursor-pointer hover:opacity-100 opacity-50 transition-opacity"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      onClick={(e) => {
+                        e.stopPropagation(); // ← STOPS Link navigation!
+                        e.preventDefault();
+                        onOpenDeleteModal(board._id);
+                      }}
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+
                 {/* White Task Section */}
                 <div className="bg-white p-4 rounded-b-lg max-h-[30rem] sm:max-h-[40rem] md:max-h-[50rem] lg:max-h-[60rem] overflow-y-auto">
                   <TaskList boardId={board._id} />
