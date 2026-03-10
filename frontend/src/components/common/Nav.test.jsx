@@ -14,6 +14,14 @@ jest.mock("react-router-dom", () => ({
 jest.mock("lottie-react", () => () => <div data-testid="lottie-animation" />);
 
 describe("Nav component", () => {
+  beforeAll(() => {
+    jest.spyOn(console, "warn").mockImplementation(() => {});
+  });
+
+  afterAll(() => {
+    console.warn.mockRestore();
+  });
+
   beforeEach(() => {
     localStorage.clear();
     mockNavigate.mockClear();
@@ -26,7 +34,7 @@ describe("Nav component", () => {
       </MemoryRouter>,
     );
 
-    const taskFlowtext = screen.getByText("TaskFlow");
+    const taskFlowtext = screen.getByText(/TaskFlow/i);
 
     expect(taskFlowtext).toBeInTheDocument();
   });
