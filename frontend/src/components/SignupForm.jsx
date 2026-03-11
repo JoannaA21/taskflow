@@ -25,11 +25,11 @@ const SignupForm = () => {
       const existingUsers = userResponse.data;
 
       const emailExist = await existingUsers.find(
-        (userExists) => userExists.email === user.email
+        (userExists) => userExists.email === user.email,
       );
 
       const usernameExist = await existingUsers.find(
-        (userExists) => userExists.username === user.username
+        (userExists) => userExists.username === user.username,
       );
 
       if (usernameExist) {
@@ -132,12 +132,12 @@ const SignupForm = () => {
       <br />
       <p className="text-sm font-light text-gray-500 dark:text-gray-400">
         Already have an account?
-        <span
+        <button
           onClick={redirectToLogin}
           className="font-medium text-primary-600 hover:underline dark:text-mainColor cursor-pointer"
         >
           &nbsp; Login
-        </span>
+        </button>
       </p>
     </div>
   );
