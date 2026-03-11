@@ -1,5 +1,5 @@
 import LoginForm from "./LoginForm";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import axios from "axios";
 
@@ -12,6 +12,11 @@ jest.mock("react-router-dom", () => ({
 }));
 
 describe("LoginForm component", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    // This ensures the DOM is fresh for every test
+  });
+
   const renderLoginForm = () => {
     render(
       <MemoryRouter>
@@ -26,6 +31,39 @@ describe("LoginForm component", () => {
     expect(screen.getByLabelText(/username\/email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Login/i })).toBeInTheDocument();
+  });
+
+  test("successful login redirect to dashboard", async () => {
+    // 1. Mock the data structure your component expects
+    const mockResponse = {
+      status: 200,
+      data: {
+        details: {
+          details: { username: "testuser" },
+          token: "fake-token-123",
+        },
+      },
+    };
+    axios.post.mockResolvedValueOnce(mockResponse);
+
+    renderLoginForm();
+
+    fireEvent.change(screen.getByLabelText(/username\/email/i), {
+      target: { value: "testuser" },
+    });
+
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: "correctpassword" },
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /login/i }));
+
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith("/dashboard");
+    });
+
+    // 5. Optional but good: check if localStorage was updated
+    expect(localStorage.getItem("loggedIn")).toContain("fake-token-123");
   });
 
   test("shows validation errors on empty submit", async () => {
