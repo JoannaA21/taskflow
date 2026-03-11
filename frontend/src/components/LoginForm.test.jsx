@@ -12,12 +12,6 @@ jest.mock("react-router-dom", () => ({
 }));
 
 describe("LoginForm component", () => {
-  const mockOnSubmit = jest.fn();
-
-  beforeEach(() => {
-    mockOnSubmit.mockClear();
-  });
-
   const renderLoginForm = () => {
     render(
       <MemoryRouter>
