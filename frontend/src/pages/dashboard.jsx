@@ -1,27 +1,45 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import BoardCard from "../components/BoardCard";
 import BoardForm from "../components/BoardForm";
 
 const Dashboard = () => {
   const loggedInUserInfo = JSON.parse(localStorage.getItem("loggedIn"));
   const user = loggedInUserInfo.details.username;
+  const token = loggedInUserInfo.token;
 
+  const [boards, setBoards] = useState([]);
   const [onAddNewBoardModal, setOnAddNewBoardModal] = useState(false); //Toggle for add new board modal visibility
 
-  // Function to close the Add New Board modal
-  const onCloseAddNewBoardModal = () => {
-    setOnAddNewBoardModal(false);
+  // Fetch boards on mount
+  useEffect(() => {
+    const fetchBoards = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/boards/", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setBoards(res.data);
+      } catch (err) {
+        console.error("Failed to fetch boards:", err);
+      }
+    };
+    fetchBoards();
+  }, []);
+
+  const handleBoardAdded = (newBoard) => {
+    setBoards((prev) => [...prev, newBoard]);
   };
 
+  // Function to close the Add New Board modal
+  const onCloseAddNewBoardModal = () => setOnAddNewBoardModal(false);
+
   // Open the edit modal for a specific task
-  const onOpenAddNewBoardModal = () => {
-    setOnAddNewBoardModal(true); // Show the edit modal
-  };
+  const onOpenAddNewBoardModal = () => setOnAddNewBoardModal(true); // Show the edit modal
 
   return (
     <>
       <div className="flex max-w-[80rem] mx-auto items-center justify-between mt-32">
-        <h1 className="bg-gradient-to-r from-primary-700 via-primary-600 to-indigo-700 bg-clip-text text-transparent text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black drop-shadow-2xl ml-10 md:ml-14 lg:ml-16 tracking-tight">
+        <h1 className="bg-gradient-to-r from-primary-700 via-primary-600 to-indigo-700 bg-clip-text text-transparent text-3xl sm:text-4xl font-black drop-shadow-2xl ml-10 md:ml-14 lg:ml-16 tracking-tight">
           Hi, {user}
         </h1>
         <button
@@ -34,13 +52,14 @@ const Dashboard = () => {
       </div>
 
       <div className="mt-5">
-        <BoardCard />
+        <BoardCard boards={boards} setBoards={setBoards} />
       </div>
 
       {onAddNewBoardModal && (
         <BoardForm
           onOpenAddNewBoardModal={onOpenAddNewBoardModal}
           onCloseAddNewBoardModal={onCloseAddNewBoardModal}
+          onBoardAdded={handleBoardAdded}
         />
       )}
     </>

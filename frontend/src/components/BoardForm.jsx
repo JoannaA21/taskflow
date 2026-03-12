@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const BoardForm = ({ onOpenAddNewBoardModal, onCloseAddNewBoardModal }) => {
+const BoardForm = ({
+  onOpenAddNewBoardModal,
+  onCloseAddNewBoardModal,
+  onBoardAdded,
+}) => {
   const boardAPI = "http://localhost:4000/api/boards/"; //Add new board api
   const loggedInUserInfo = JSON.parse(localStorage.getItem("loggedIn"));
   const token = loggedInUserInfo.token;
@@ -10,6 +14,7 @@ const BoardForm = ({ onOpenAddNewBoardModal, onCloseAddNewBoardModal }) => {
     name: "",
     description: "",
   });
+
   const [error, setError] = useState("");
 
   const handleOnChange = (e) => {
@@ -37,10 +42,14 @@ const BoardForm = ({ onOpenAddNewBoardModal, onCloseAddNewBoardModal }) => {
         },
       });
       //console.log(res);
-      window.location.reload();
+      onBoardAdded(res.data);
       onCloseAddNewBoardModal();
+      setNewBoard({ name: "", description: "" });
     } catch (err) {
-      err.response?.data?.message || "An error occurred creating a new task.";
+      setError(
+        err.response?.data?.message ||
+          "An error occurred creating a new board.",
+      );
     }
   };
 
@@ -56,23 +65,31 @@ const BoardForm = ({ onOpenAddNewBoardModal, onCloseAddNewBoardModal }) => {
           <p className="text-red-700 text-md bg-red-200 p-2 w-fit">{error}</p>
         )}
 
-        <label className="block text-sm font-medium text-gray-900 dark:text-white text-left">
+        <label
+          htmlFor="board-name"
+          className="block text-sm font-medium text-gray-900 dark:text-white text-left"
+        >
           Board Name
         </label>
         <input
           type="text"
           name="name"
+          id="board-name"
           value={newBoard.name}
           onChange={handleOnChange}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
 
-        <label className="block text-sm font-medium text-gray-900 dark:text-white text-left">
+        <label
+          htmlFor="description"
+          className="block text-sm font-medium text-gray-900 dark:text-white text-left"
+        >
           Description
         </label>
         <input
           type="text"
           name="description"
+          id="description"
           value={newBoard.description}
           onChange={handleOnChange}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
