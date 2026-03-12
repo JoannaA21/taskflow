@@ -36,19 +36,11 @@ const TaskForm = ({
 
   const addTask = async (e) => {
     e.preventDefault();
+    console.log("newTask.dueDate:", newTask.dueDate); // ← add this temporarily
+    console.log("today:", today);
 
     if (!newTask.title) {
       setError("Title field must be field out.");
-      return;
-    }
-
-    if (!newTask.dueDate) {
-      setError("Due date field must be field out.");
-      return;
-    }
-
-    if (new Date(newTask.dueDate).getTime() < Date.now()) {
-      setError("The due date cannot be earlier than today.");
       return;
     }
 
@@ -66,7 +58,9 @@ const TaskForm = ({
       onCloseAddNewTaskModal();
       // console.log("Added successfully");
     } catch (err) {
-      err.response?.data?.message || "An error occurred creating a new task.";
+      setError(
+        err.response?.data?.message || "An error occurred creating a new task.",
+      );
     }
   };
 
@@ -83,7 +77,10 @@ const TaskForm = ({
             <p className="text-red-700 text-md bg-red-200 p-2 w-fit">{error}</p>
           )}
 
-          <label className="block text-sm font-medium text-gray-900 dark:text-white text-left">
+          <label
+            htmlFor="title"
+            className="block text-sm font-medium text-gray-900 dark:text-white text-left"
+          >
             Task Title
           </label>
           <input
@@ -92,9 +89,13 @@ const TaskForm = ({
             name="title"
             value={newTask.title}
             onChange={handleInputChange}
+            id="title"
           />
 
-          <label className="block text-sm font-medium text-gray-900 dark:text-white text-left">
+          <label
+            htmlFor="description"
+            className="block text-sm font-medium text-gray-900 dark:text-white text-left"
+          >
             Description
           </label>
           <input
@@ -103,6 +104,7 @@ const TaskForm = ({
             name="description"
             value={newTask.description}
             onChange={handleInputChange}
+            id="description"
           />
 
           <label className="block text-sm font-medium text-gray-900 dark:text-white text-left">
@@ -133,7 +135,10 @@ const TaskForm = ({
             <option value="High">High</option>
           </select>
 
-          <label className="block text-sm font-medium text-gray-900 dark:text-white text-left">
+          <label
+            htmlFor="dueDate"
+            className="block text-sm font-medium text-gray-900 dark:text-white text-left"
+          >
             Due Date
           </label>
           <div className="relative">
@@ -143,6 +148,7 @@ const TaskForm = ({
               min={today}
               value={newTask.dueDate}
               onChange={handleInputChange}
+              id="dueDate"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
           </div>
