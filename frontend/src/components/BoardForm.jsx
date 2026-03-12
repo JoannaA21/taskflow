@@ -43,11 +43,13 @@ const BoardForm = ({
       });
       //console.log(res);
       onBoardAdded(res.data);
-      // window.location.reload(); //page reload so that new added board shows on dashboard after adding
       onCloseAddNewBoardModal();
-      setNewBoard({ name: "", description: "" }); // ← reset form
+      setNewBoard({ name: "", description: "" });
     } catch (err) {
-      err.response?.data?.message || "An error occurred creating a new task.";
+      setError(
+        err.response?.data?.message ||
+          "An error occurred creating a new board.",
+      );
     }
   };
 

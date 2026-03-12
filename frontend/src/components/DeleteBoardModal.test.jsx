@@ -25,5 +25,6 @@ describe("DeleteBoardModal component", () => {
       />,
     );
     expect(screen.getByRole("button", { name: /delete/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /cancel/i })).toBeInTheDocument();
   });
 });
