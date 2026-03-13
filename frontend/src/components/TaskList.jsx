@@ -20,7 +20,7 @@ const TaskList = ({ boardId }) => {
         );
         setTasks(response.data);
       } catch (err) {
-        console.error("Error fetching tasks:", err);
+        // console.error("Error fetching tasks:", err);
         setError("Failed to load tasks. Please try again.");
       }
     };
@@ -28,12 +28,20 @@ const TaskList = ({ boardId }) => {
     fetchTasks();
   }, [boardId, token]);
 
+  if (error) {
+    return (
+      <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+        <p className="text-xs sm:text-sm text-red-800">{error}</p>
+      </div>
+    );
+  }
+
   if (!tasks || tasks.length === 0) {
     return (
       <div className="p-6 text-center">
         <div className="text-4xl mb-4 text-gray-300">📝</div>
         <p className="text-sm sm:text-base text-gray-500 italic">
-          No tasks yet. Click to add your first task!
+          Click on Add New Task to get started.
         </p>
       </div>
     );
