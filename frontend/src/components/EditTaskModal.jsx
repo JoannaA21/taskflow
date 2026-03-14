@@ -52,17 +52,18 @@ const EditTaskModal = ({
 
   const editTask = async (e) => {
     e.preventDefault();
+
+    if (editedTask.dueDate < today) {
+      setError("The due date cannot be earlier than today.");
+      return;
+    }
+
     try {
       const response = await axios.patch(taskAPI, editedTask, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      if (new Date(editedTask.dueDate).getTime() < Date.now()) {
-        setError("The due date cannot be earlier than today.");
-        return;
-      }
 
       const updatedTask = response.data;
 
