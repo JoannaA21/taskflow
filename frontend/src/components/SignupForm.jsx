@@ -75,13 +75,14 @@ const SignupForm = () => {
       <form onSubmit={handleSubmit} className="space-y-4">
         <label
           htmlFor="username"
-          className="block text-sm font-medium text-gray-900 dark:text-white text-left"
+          className="block text-sm font-medium text-gray-900  text-left"
         >
           Username
         </label>
         <input
           required
           type="text"
+          name="username"
           value={user.username}
           id="username"
           onChange={(e) => setUser({ ...user, username: e.target.value })}
@@ -89,47 +90,50 @@ const SignupForm = () => {
         />
         <label
           htmlFor="email"
-          className="block mb-1 text-sm font-medium text-gray-900 dark:text-white text-left"
+          className="block mb-1 text-sm font-medium text-gray-900  text-left"
         >
           Email
         </label>
         <input
           required
           type="email"
+          name="email"
           value={user.email}
           id="email"
           onChange={(e) => setUser({ ...user, email: e.target.value })}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
         <label
           htmlFor="password"
-          className="block mb-1 text-sm font-medium text-gray-900 dark:text-white text-left"
+          className="block mb-1 text-sm font-medium text-gray-900  text-left"
         >
           Password
         </label>
         <input
           required
           type="password"
+          nmae="password"
           value={user.password}
           id="password"
           onChange={(e) => setUser({ ...user, password: e.target.value })}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
         <label
           htmlFor="confirm-password"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-left"
+          className="block mb-2 text-sm font-medium text-gray-900  text-left"
         >
           Confirm Password
         </label>
         <input
           required
           type="password"
+          name="confirmPassword"
           value={user.confirmPassword}
           id="confirm-password"
           onChange={(e) =>
             setUser({ ...user, confirmPassword: e.target.value })
           }
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
         {errorMessage ? (
           <p className="text-red-700 text-md bg-red-200 p-1 w-fit">
